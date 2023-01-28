@@ -86,7 +86,9 @@ class OnboardingPage extends StatelessWidget {
             child: Column(
               children: [
                 TextButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go('/app');
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
@@ -113,7 +115,9 @@ class OnboardingPage extends StatelessWidget {
                   height: 16,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go('/app');
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     foregroundColor: Colors.white,

@@ -7,6 +7,7 @@ class AppTheme {
   static const Color lightYellow = Color(0xffFFFAF3);
   static const Color orange = Color(0XFFFD8C09);
   static Color halfGrey = Colors.grey.withOpacity(.5);
+  static const Color halfOrange = Color(0xFFffeedb);
 
   static final ThemeData defaultTheme = ThemeData.light().copyWith(
     useMaterial3: true,

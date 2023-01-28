@@ -13,6 +13,7 @@ final appRouter = GoRouter(
   },
   routes: [
     AppRoute(Views.initial, (_) => OnboardingPage()),
+    AppRoute('/app', (_) => RootApp()),
   ],
 );
 
