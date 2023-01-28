@@ -18,6 +18,7 @@ class BuggiApp extends StatelessWidget {
       routeInformationProvider: appRouter.routeInformationProvider,
       routeInformationParser: appRouter.routeInformationParser,
       routerDelegate: appRouter.routerDelegate,
+      theme: AppTheme.defaultTheme,
     );
   }
 }
