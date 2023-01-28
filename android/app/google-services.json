@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "423809146614",
+    "project_id": "buggiapp",
+    "storage_bucket": "buggiapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423809146614:android:f9147e6a92bf65b651d6d7",
+        "android_client_info": {
+          "package_name": "com.buggi.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423809146614-k0tt1mekqp87998n07gsh9dsbs3qr9di.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCjpDw0-cX-d3V5hKvcA0ipse35dxGwOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423809146614-k0tt1mekqp87998n07gsh9dsbs3qr9di.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
