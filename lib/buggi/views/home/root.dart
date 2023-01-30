@@ -1,4 +1,7 @@
 import 'package:app/buggi/config/config.dart';
+import 'package:app/buggi/views/home/body.dart';
+import 'package:app/buggi/views/home/bottom.dart';
+import 'package:app/buggi/views/search/root.dart';
 import 'package:app/common_libs.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -39,7 +42,9 @@ class HomePage extends StatelessWidget {
                     color: AppTheme.halfOrange,
                     clipBehavior: Clip.hardEdge,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        showSearch(context: context, delegate: SearchPage());
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
@@ -71,43 +76,16 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: appBarHeight,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-              child: const Center(
-                child: Text('Home Page'),
-              ),
-            ),
-          ),
+              top: appBarHeight,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: const HomeBody()),
           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
-            child: Container(
-              padding: EdgeInsets.only(
-                left: size.width * 0.25,
-                right: size.width * 0.25,
-                bottom: 16,
-              ),
-              child: TextButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text(
-                  'Buggi',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    height: 1,
-                  ),
-                ),
-              ),
-            ),
+            child: HomeBottom(size: size),
           )
         ],
       ),
