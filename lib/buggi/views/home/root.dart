@@ -32,7 +32,10 @@ class HomePage extends StatelessWidget {
                   const Text(
                     'Hi, Lewis 😀',
                     style: TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold, height: 1),
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      height: 1,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   Material(
@@ -46,21 +49,23 @@ class HomePage extends StatelessWidget {
                         showSearch(context: context, delegate: SearchPage());
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             const Icon(
                               CupertinoIcons.search,
                               color: Colors.grey,
+                              size: 18,
                             ),
                             const SizedBox(width: 16),
                             Text(
                               'Search for a book...',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 height: 1,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey.shade500,

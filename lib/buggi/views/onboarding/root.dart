@@ -1,3 +1,4 @@
+import 'package:app/buggi/components/components.dart';
 import 'package:app/buggi/config/config.dart';
 import 'package:app/buggi/services/auth/root.dart';
 import 'package:app/buggi/views/onboarding/email_step.dart';
@@ -89,8 +90,13 @@ class OnboardingPage extends StatelessWidget {
               children: [
                 TextButton.icon(
                   onPressed: () async {
-                    var creds = await BuggiAuth.signInWithGoogle();
-                    print(creds);
+                    var signedIn = await BuggiAuth.signInWithGoogle();
+                    if (signedIn) {
+                      // ignore: use_build_context_synchronously
+                      context.pushReplacementNamed(Constants.initialRoute);
+                    } else {
+                      showToast('Error signing in with Google', isError: true);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,

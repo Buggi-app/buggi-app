@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '423809146614',
     projectId: 'buggiapp',
     storageBucket: 'buggiapp.appspot.com',
+    androidClientId: '423809146614-48arf2nl1r337f6tio0b92svr2roul1k.apps.googleusercontent.com',
     iosClientId: '423809146614-ls7hgmttr8779g9k1c6he6tmofp2dmkc.apps.googleusercontent.com',
     iosBundleId: 'com.buggi.app',
   );

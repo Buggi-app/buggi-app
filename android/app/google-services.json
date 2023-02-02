@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "423809146614-48arf2nl1r337f6tio0b92svr2roul1k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.buggi.app",
+            "certificate_hash": "a874c763a643f4d56f86e3cca3cb33f061193358"
+          }
+        },
+        {
           "client_id": "423809146614-md7dacdtnvac7lhn4si87mv93t49bn9m.apps.googleusercontent.com",
           "client_type": 3
         }
