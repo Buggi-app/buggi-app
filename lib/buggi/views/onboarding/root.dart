@@ -1,4 +1,5 @@
 import 'package:app/buggi/config/config.dart';
+import 'package:app/buggi/services/auth/root.dart';
 import 'package:app/buggi/views/onboarding/email_step.dart';
 import 'package:app/common_libs.dart';
 
@@ -87,8 +88,9 @@ class OnboardingPage extends StatelessWidget {
             child: Column(
               children: [
                 TextButton.icon(
-                  onPressed: () {
-                    // context.go('/app');
+                  onPressed: () async {
+                    var creds = await BuggiAuth.signInWithGoogle();
+                    print(creds);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,

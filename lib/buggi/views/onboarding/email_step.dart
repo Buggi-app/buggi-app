@@ -23,16 +23,26 @@ class _EmailOnboardingState extends State<EmailOnboarding> {
 
   emailSubmit() async {
     if (_formKey1.currentState!.validate()) {
-      userExists = await BuggiAuth.checkIfUserExists(
-          _emailController.text.toLowerCase());
-      setState(() {
-        _step = userExists ? 1 : 2;
-      });
+      loadingDialog(context);
+      try {
+        userExists = await BuggiAuth.checkIfUserExists(
+            _emailController.text.toLowerCase());
+        setState(() {
+          _step = userExists ? 1 : 2;
+        });
+        if (!mounted) return;
+        context.pop();
+      } catch (e) {
+        if (!mounted) return;
+        context.pop();
+        showToast('Error occurred !', isError: true);
+      }
     }
   }
 
   passwordSubmit() async {
     if (_formKey2.currentState!.validate()) {
+      loadingDialog(context);
       final String status;
       if (userExists) {
         status = await BuggiAuth.emailSignIn(
@@ -50,6 +60,8 @@ class _EmailOnboardingState extends State<EmailOnboarding> {
         if (!mounted) return;
         context.pushReplacementNamed(Constants.initialRoute);
       } else {
+        if (!mounted) return;
+        context.pop();
         showToast(status, isError: true);
       }
     }
