@@ -29,6 +29,13 @@
             {
               "client_id": "423809146614-k0tt1mekqp87998n07gsh9dsbs3qr9di.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "423809146614-ls7hgmttr8779g9k1c6he6tmofp2dmkc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.buggi.app"
+              }
             }
           ]
         }

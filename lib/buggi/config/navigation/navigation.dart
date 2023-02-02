@@ -1,31 +1,46 @@
-import 'package:app/buggi/components/sections/error_screen.dart';
+import 'package:app/buggi/components/components.dart';
+import 'package:app/buggi/config/config.dart';
+import 'package:app/buggi/services/auth/root.dart';
 import 'package:app/buggi/views/onboarding/root.dart';
 import 'package:app/buggi/views/root_app/root.dart';
 import 'package:app/common_libs.dart';
 
-class Views {
-  static String initial = '/';
-}
+class GlobalNavigation {
+  GlobalNavigation._();
+  static final GlobalNavigation _instance = GlobalNavigation._();
+  static GlobalNavigation get instance => _instance;
+  factory GlobalNavigation() => _instance;
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
-final appRouter = GoRouter(
-  errorBuilder: (context, state) {
-    return const ErrorView(isFullScreen: true);
-  },
-  routes: [
-    AppRoute(Views.initial, (_) => OnboardingPage()),
-    AppRoute('/app', (_) => RootApp()),
-  ],
-);
+  static BuildContext? get context => _instance._navigatorKey.currentContext;
+  static GlobalKey<NavigatorState> get key => _instance._navigatorKey;
 
-class AppRoute extends GoRoute {
-  final bool useFade;
-
-  AppRoute(String path, Widget Function(GoRouterState state) builder,
-      {List<GoRoute> routes = const [], this.useFade = false})
-      : super(
-          path: path,
-          builder: (context, state) {
-            return builder(state);
+  static Route<dynamic> routes(RouteSettings settings) {
+    switch (settings.name) {
+      case Constants.initialRoute:
+        return MaterialPageRoute(
+          builder: (_) {
+            return BuggiAuth.userIsAuthenticated
+                ? const RootApp()
+                : const OnboardingPage();
           },
         );
+      default:
+        return CustomPage(child: const ErrorView());
+    }
+  }
+}
+
+extension Navigation on BuildContext {
+  void pushNamed(String routeName) {
+    Navigator.of(this).pushNamed(routeName);
+  }
+
+  void pop() {
+    Navigator.of(this).pop();
+  }
+
+  void pushReplacementNamed(String routeName) {
+    Navigator.of(this).pushReplacementNamed(routeName);
+  }
 }

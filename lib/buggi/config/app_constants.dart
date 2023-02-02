@@ -1,4 +1,5 @@
 class Constants {
+  static const String appName = 'Buggi';
   static const String initialRoute = '/';
 }
 

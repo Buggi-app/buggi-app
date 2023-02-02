@@ -13,12 +13,13 @@ class BuggiApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
+      navigatorKey: GlobalNavigation.key,
+      title: Constants.appName,
       debugShowCheckedModeBanner: false,
-      routeInformationProvider: appRouter.routeInformationProvider,
-      routeInformationParser: appRouter.routeInformationParser,
-      routerDelegate: appRouter.routerDelegate,
       theme: AppTheme.defaultTheme,
+      onGenerateRoute: GlobalNavigation.routes,
+      initialRoute: Constants.initialRoute,
     );
   }
 }

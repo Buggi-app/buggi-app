@@ -1,4 +1,5 @@
 import 'package:app/buggi/config/config.dart';
+import 'package:app/buggi/views/onboarding/email_step.dart';
 import 'package:app/common_libs.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -87,7 +88,7 @@ class OnboardingPage extends StatelessWidget {
               children: [
                 TextButton.icon(
                   onPressed: () {
-                    context.go('/app');
+                    // context.go('/app');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -116,7 +117,12 @@ class OnboardingPage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    context.go('/app');
+                    Navigator.of(context).push(
+                      CustomPage(
+                        type: Transition.fade,
+                        child: const EmailOnboarding(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
