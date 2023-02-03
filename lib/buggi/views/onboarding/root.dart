@@ -29,9 +29,12 @@ class OnboardingPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Image.asset(
-                  LocalAsset.bookgirlImage,
-                  width: size.width * 0.45,
+                Hero(
+                  tag: 'bookgirl',
+                  child: Image.asset(
+                    LocalAsset.bookgirlImage,
+                    width: size.width * 0.45,
+                  ),
                 ),
                 Container(
                   width: size.width * 0.45,

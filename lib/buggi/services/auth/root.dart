@@ -1,5 +1,4 @@
 import 'package:app/buggi/components/widgets/info_widgets.dart';
-import 'package:app/buggi/config/navigation/navigation.dart';
 import 'package:app/common_libs.dart';
 
 class BuggiAuth {

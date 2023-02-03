@@ -81,9 +81,23 @@ class _EmailOnboardingState extends State<EmailOnboarding> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
-          child: _step == 0 ? _emailSection(size) : _passwordSection(size),
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: Hero(
+                tag: 'bookgirl',
+                child: Image.asset(
+                  LocalAsset.bookgirlImage,
+                  height: size.height * 0.2,
+                ),
+              ),
+            ),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              child: _step == 0 ? _emailSection(size) : _passwordSection(size),
+            ),
+          ],
         ),
       ),
     );
@@ -95,9 +109,6 @@ class _EmailOnboardingState extends State<EmailOnboarding> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: size.height * 0.2,
-          ),
           const Text(
             'Email',
             style: TextStyle(fontSize: 28),
@@ -128,9 +139,6 @@ class _EmailOnboardingState extends State<EmailOnboarding> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: size.height * 0.2,
-          ),
           if (_step == 2)
             const Text(
               'Welcome to Buggi',
