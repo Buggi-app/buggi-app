@@ -13,24 +13,56 @@ class RootApp extends StatefulWidget {
 
 class _RootAppState extends State<RootApp> {
   int navSelectedIndex = 0;
-  final List<Map<String, dynamic>> destinations = [
-    {
-      'active_icon': LocalAsset.homeFilledIcon,
-      'icon': LocalAsset.homeOutlinedIcon,
-      'label': 'Home',
-      'widget': HomePage(),
-    },
-    {
-      'active_icon': LocalAsset.userFilledIcon,
-      'icon': LocalAsset.userOutlinedIcon,
-      'label': 'Profile',
-      'widget': ProfilePage(),
-    }
-  ];
+  double homeScrollOffset = 0;
+  final ScrollController _timelineScrollController = ScrollController();
+  List<Map<String, dynamic>> get destinations => [
+        {
+          'active_icon': LocalAsset.homeFilledIcon,
+          'icon': LocalAsset.homeOutlinedIcon,
+          'label': 'Home',
+        },
+        {
+          'active_icon': LocalAsset.userFilledIcon,
+          'icon': LocalAsset.userOutlinedIcon,
+          'label': 'Profile',
+        }
+      ];
+
+  @override
+  void initState() {
+    super.initState();
+    homeScrollManager();
+  }
+
+  homeScrollManager() {
+    _timelineScrollController.addListener(() {
+      setState(() {
+        homeScrollOffset = _timelineScrollController.offset;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: destinations[navSelectedIndex]['widget'],
+      body: PageTransitionSwitcher(
+        transitionBuilder: (child, animation, seconAnimation) {
+          return FadeThroughTransition(
+            animation: animation,
+            secondaryAnimation: seconAnimation,
+            fillColor: AppTheme.lightYellow,
+            child: child,
+          );
+        },
+        child: navSelectedIndex == 0
+            ? HomePage(
+                scrollController: _timelineScrollController,
+                scrollOffset: homeScrollOffset,
+                size: size,
+              )
+            : const ProfilePage(),
+      ),
       bottomNavigationBar: BuggiNavigationBar(
         selectedIndex: navSelectedIndex,
         destinations: destinations,

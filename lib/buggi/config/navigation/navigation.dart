@@ -1,6 +1,8 @@
 import 'package:app/buggi/components/components.dart';
 import 'package:app/buggi/config/config.dart';
+import 'package:app/buggi/models/timeline_model.dart';
 import 'package:app/buggi/services/auth/root.dart';
+import 'package:app/buggi/views/offer/root.dart';
 import 'package:app/buggi/views/onboarding/root.dart';
 import 'package:app/buggi/views/root_app/root.dart';
 import 'package:app/common_libs.dart';
@@ -25,6 +27,12 @@ class GlobalNavigation {
                 : const OnboardingPage();
           },
         );
+      case OfferPage.routeName:
+        return MaterialPageRoute(
+          builder: (_) => OfferPage(
+            offer: settings.arguments as Offer,
+          ),
+        );
       default:
         return CustomPage(child: const ErrorView());
     }
@@ -32,8 +40,8 @@ class GlobalNavigation {
 }
 
 extension Navigation on BuildContext {
-  void pushNamed(String routeName) {
-    Navigator.of(this).pushNamed(routeName);
+  void pushNamed(String routeName, {Object? arguments}) {
+    Navigator.of(this).pushNamed(routeName, arguments: arguments);
   }
 
   void pop() {

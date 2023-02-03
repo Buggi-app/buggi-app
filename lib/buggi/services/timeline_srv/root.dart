@@ -1,4 +1,4 @@
-import 'package:app/buggi/models/timeline.dart';
+import 'package:app/buggi/models/timeline_model.dart';
 import 'package:app/common_libs.dart';
 
 final timelineServiceProvider = StateNotifierProvider(
