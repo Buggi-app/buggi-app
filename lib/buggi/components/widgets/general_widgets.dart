@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:app/buggi/config/theme.dart';
 import 'package:app/common_libs.dart';
 
@@ -67,6 +69,54 @@ class BuggiNavigationBar extends StatelessWidget {
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class BuggImage extends StatefulWidget {
+  const BuggImage({
+    super.key,
+    required this.image,
+    this.fit = BoxFit.scaleDown,
+    this.scale,
+    this.syncDuration,
+  });
+
+  final ImageProvider? image;
+  final BoxFit fit;
+  final double? scale;
+  final Duration? syncDuration;
+
+  @override
+  State<BuggImage> createState() => _BuggImageState();
+}
+
+class _BuggImageState extends State<BuggImage> {
+  @override
+  Widget build(BuildContext context) {
+       return ImageFade(
+      image: widget.image,
+      fit: widget.fit,
+      // alignment: widget.alignment,
+      // duration: widget.duration ?? $styles.times.fast,
+      // syncDuration: widget.syncDuration ?? 0.ms,
+      loadingBuilder: (_, value, ___) {
+        if (!false && !false) return SizedBox();
+        // return Center(child: AppLoadingIndicator(value: widget.progress ? value : null, color: widget.color));
+      },
+      errorBuilder: (_, __) => Container(
+        padding: const EdgeInsets.all(16),
+        alignment: Alignment.center,
+        child: LayoutBuilder(builder: (_, constraints) {
+          double size = min(constraints.biggest.width, constraints.biggest.height);
+          if (size < 16) return SizedBox();
+          return Icon(
+            Icons.image_not_supported_outlined,
+            color: Colors.white.withOpacity(.2),
+            size: min(size, 32),
+          );
+        }),
       ),
     );
   }

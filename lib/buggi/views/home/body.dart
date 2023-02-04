@@ -1,6 +1,7 @@
 import 'package:app/buggi/config/config.dart';
 import 'package:app/buggi/models/dummy_data.dart';
 import 'package:app/buggi/models/timeline_model.dart';
+import 'package:app/buggi/utils/utils.dart';
 import 'package:app/buggi/views/offer/root.dart';
 import 'package:app/common_libs.dart';
 

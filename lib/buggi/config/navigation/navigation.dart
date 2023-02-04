@@ -38,17 +38,3 @@ class GlobalNavigation {
     }
   }
 }
-
-extension Navigation on BuildContext {
-  void pushNamed(String routeName, {Object? arguments}) {
-    Navigator.of(this).pushNamed(routeName, arguments: arguments);
-  }
-
-  void pop() {
-    Navigator.of(this).pop();
-  }
-
-  void pushReplacementNamed(String routeName) {
-    Navigator.of(this).pushReplacementNamed(routeName);
-  }
-}
