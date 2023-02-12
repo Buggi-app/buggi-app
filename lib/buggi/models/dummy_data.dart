@@ -16,7 +16,7 @@ List<Map<String, dynamic>> timeLineData = [
             "name": "Handwriting Activity Pre-primary 1",
             "ISBN": "9789966631688",
             "image":
-                "https://textbookcentre.com/media/cache/c6/18/c61868a1dfde2185c892bf7c9e459f30.jpg",
+                "https://klbbooks.com/wp-content/uploads/2020/10/math-grade1.png",
             "authors": ["John Doe"],
             "publisher": "Moran Publishers",
           }
@@ -41,7 +41,7 @@ List<Map<String, dynamic>> timeLineData = [
             "name": "Handwriting Activity Pre-primary 1",
             "ISBN": "9780195746587",
             "image":
-                "https://textbookcentre.com/media/cache/82/46/8246af01e987fb79445bcc23514e6988.jpg",
+                "https://klbbooks.com/wp-content/uploads/2020/10/math-grade1.png",
             "authors": ["John Doe"],
             "publisher": "Oxford University Press",
           }
@@ -61,7 +61,7 @@ List<Map<String, dynamic>> timeLineData = [
             "name": "Handwriting Activity Pre-primary 1",
             "ISBN": "9780195746587",
             "image":
-                "https://textbookcentre.com/media/cache/82/46/8246af01e987fb79445bcc23514e6988.jpg",
+                "https://klbbooks.com/wp-content/uploads/2020/10/math-grade1.png",
             "authors": ["John Doe"],
             "publisher": "Oxford University Press",
           },
@@ -94,7 +94,7 @@ List<Map<String, dynamic>> timeLineData = [
             "name": "Handwriting Activity Pre-primary 1",
             "ISBN": "9780195746587",
             "image":
-                "https://textbookcentre.com/media/cache/82/46/8246af01e987fb79445bcc23514e6988.jpg",
+                "https://klbbooks.com/wp-content/uploads/2020/10/math-grade1.png",
             "authors": ["John Doe"],
             "publisher": "Oxford University Press",
           },
@@ -130,7 +130,7 @@ List<Map<String, dynamic>> timeLineData = [
             "name": "Handwriting Activity Pre-primary 1",
             "ISBN": "9780195746587",
             "image":
-                "https://textbookcentre.com/media/cache/82/46/8246af01e987fb79445bcc23514e6988.jpg",
+                "https://klbbooks.com/wp-content/uploads/2020/10/math-grade1.png",
             "authors": ["John Doe"],
             "publisher": "Oxford University Press",
           }
@@ -155,7 +155,7 @@ List<Map<String, dynamic>> timeLineData = [
             "name": "Handwriting Activity Pre-primary 1",
             "ISBN": "9789966631688",
             "image":
-                "https://textbookcentre.com/media/cache/c6/18/c61868a1dfde2185c892bf7c9e459f30.jpg",
+                "https://klbbooks.com/wp-content/uploads/2020/10/math-grade1.png",
             "authors": ["John Doe"],
             "publisher": "Moran Publishers",
           }
@@ -175,7 +175,7 @@ List<Map<String, dynamic>> timeLineData = [
             "name": "Handwriting Activity Pre-primary 1",
             "ISBN": "9789966631688",
             "image":
-                "https://textbookcentre.com/media/cache/c6/18/c61868a1dfde2185c892bf7c9e459f30.jpg",
+                "https://klbbooks.com/wp-content/uploads/2020/10/math-grade1.png",
             "authors": ["John Doe"],
             "publisher": "Moran Publishers",
           }
@@ -195,7 +195,7 @@ List<Map<String, dynamic>> timeLineData = [
             "name": "Handwriting Activity Pre-primary 1",
             "ISBN": "9789966631688",
             "image":
-                "https://textbookcentre.com/media/cache/c6/18/c61868a1dfde2185c892bf7c9e459f30.jpg",
+                "https://klbbooks.com/wp-content/uploads/2020/10/math-grade1.png",
             "authors": ["John Doe"],
             "publisher": "Moran Publishers",
           }
@@ -220,7 +220,7 @@ List<Map<String, dynamic>> timeLineData = [
             "name": "Handwriting Activity Pre-primary 1",
             "ISBN": "9789966631688",
             "image":
-                "https://textbookcentre.com/media/cache/c6/18/c61868a1dfde2185c892bf7c9e459f30.jpg",
+                "https://klbbooks.com/wp-content/uploads/2020/10/math-grade1.png",
             "authors": ["John Doe"],
             "publisher": "Moran Publishers",
           }

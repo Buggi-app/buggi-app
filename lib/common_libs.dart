@@ -6,3 +6,5 @@ export 'package:firebase_core/firebase_core.dart';
 export 'package:google_sign_in/google_sign_in.dart';
 export 'package:animations/animations.dart';
 export 'package:image_fade/image_fade.dart';
+export 'package:swipe_deck/swipe_deck.dart';
+export 'package:url_launcher/url_launcher.dart';

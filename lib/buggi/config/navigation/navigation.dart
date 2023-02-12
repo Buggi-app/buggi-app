@@ -28,8 +28,9 @@ class GlobalNavigation {
           },
         );
       case OfferPage.routeName:
-        return MaterialPageRoute(
-          builder: (_) => OfferPage(
+        return CustomPage(
+          type: Transition.fade,
+          child: OfferPage(
             offer: settings.arguments as Offer,
           ),
         );
