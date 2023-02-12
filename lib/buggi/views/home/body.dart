@@ -74,7 +74,7 @@ class HomeBody extends StatelessWidget {
                               child: InkWell(
                                 onTap: () {
                                   context.pushNamed(
-                                    OfferPage.routeName,
+                                    OfferPage.route,
                                     arguments: Offer(
                                       id: UniqueKey().toString(),
                                       title: offer['offer_title'],

@@ -2,6 +2,8 @@ import 'package:app/buggi/components/components.dart';
 import 'package:app/buggi/config/config.dart';
 import 'package:app/buggi/services/auth/root.dart';
 import 'package:app/buggi/utils/utils.dart';
+import 'package:app/buggi/views/profile/edit_profile.dart';
+import 'package:app/buggi/views/profile/my_offers.dart';
 import 'package:app/common_libs.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -78,7 +80,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const Spacer(),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.pushNamed(EditProfilePage.route);
+                },
                 icon: SvgPicture.asset(
                   LocalAsset.editPersonIcon,
                   width: 20,
@@ -118,7 +122,9 @@ class _ProfilePageState extends State<ProfilePage> {
             itemBuilder: (context, index) {
               if (index == 3) {
                 return TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.pushNamed(MyOffers.route);
+                  },
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(
                       AppTheme.orange,

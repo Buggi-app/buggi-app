@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:app/buggi/components/components.dart';
 import 'package:app/buggi/config/theme.dart';
 import 'package:app/buggi/models/models.dart';
+import 'package:app/buggi/utils/utils.dart';
 import 'package:app/common_libs.dart';
 
 List tempData = [
@@ -23,7 +24,7 @@ List tempData = [
 
 class OfferPage extends StatefulWidget {
   final Offer offer;
-  static const String routeName = '/offer';
+  static const String route = '/offer';
   const OfferPage({super.key, required this.offer});
 
   @override
@@ -174,69 +175,10 @@ class _OfferPageState extends State<OfferPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _contact,
-        label: const Text('Contact Me'),
+      floatingActionButton: const FloatingActionButton.extended(
+        onPressed: contactTapped,
+        label: Text('Contact Me'),
       ),
     );
-  }
-
-  void _contact() async {
-    var selected = await Options.select<String>(
-      title: 'Contact Me',
-      options: ['Call', 'Message', 'Email'],
-    );
-    if (selected != null) {
-      Uri launchUri;
-      switch (selected[0].toLowerCase()) {
-        case 'call':
-          launchUri = Uri(
-            scheme: 'tel',
-            path: '0712345678',
-          );
-          _launchURL(launchUri);
-          break;
-        case 'message':
-          launchUri = Uri(
-            scheme: 'sms',
-            path: '0118 999 881 999 119 7253',
-            queryParameters: <String, String>{
-              'body':
-                  Uri.encodeComponent('Example Subject & Symbols are allowed!'),
-            },
-          );
-          _launchURL(launchUri);
-          break;
-        case 'email':
-          String? encodeQueryParameters(Map<String, String> params) {
-            return params.entries
-                .map((MapEntry<String, String> e) =>
-                    '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-                .join('&');
-          }
-          launchUri = Uri(
-            scheme: 'mailto',
-            path: 'smith@example.com',
-            query: encodeQueryParameters(<String, String>{
-              'subject': 'Example Subject & Symbols are allowed!',
-            }),
-          );
-          launchUrl(launchUri);
-          break;
-      }
-    }
-  }
-
-  _launchURL(Uri url) async {
-    try {
-      await launchUrl(url);
-    } catch (e) {
-      print(e);
-    }
-    // if (await canLaunchUrl(url)) {
-    //   await launchUrl(url);
-    // } else {
-    //   throw 'Could not launch $url';
-    // }
   }
 }

@@ -16,4 +16,5 @@ class LocalAsset {
   static const String userOutlinedIcon = '$icons/user_outlined.svg';
   static const String userFilledIcon = '$icons/user_filled.svg';
   static const String editPersonIcon = '$icons/edit_person.svg';
+  static const String addBookIcon = '$icons/add_book.svg';
 }

@@ -1,4 +1,6 @@
 import 'package:app/buggi/config/config.dart';
+import 'package:app/buggi/utils/utils.dart';
+import 'package:app/buggi/views/actions/root.dart';
 import 'package:app/common_libs.dart';
 
 class HomeBottom extends StatelessWidget {
@@ -9,13 +11,44 @@ class HomeBottom extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
+      child: Container(
+        margin: EdgeInsets.only(
+            left: size.width * 0.25,
+            right: size.width * 0.25,
+            bottom: 16,
+            top: 16),
+        child: TextButton(
+          onPressed: () {
+            context.pushNamed(BuggiActions.route);
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+            foregroundColor: Colors.white,
+          ),
+          child: const Text(
+            'Buggi',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              height: 1,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget background(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       child: IgnorePointer(
         child: Container(
           padding: EdgeInsets.only(
-              left: size.width * 0.25,
-              right: size.width * 0.25,
-              bottom: 16,
-              top: 16),
+            left: context.width * 0.25,
+            right: context.width * 0.25,
+            bottom: 16,
+            top: 16,
+          ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -30,11 +63,11 @@ class HomeBottom extends StatelessWidget {
           child: TextButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.teal,
               foregroundColor: Colors.white,
             ),
             child: const Text(
-              'Buggi',
+              'B',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
