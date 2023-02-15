@@ -24,6 +24,7 @@ dependencies:
   image_fade: ^0.6.2
   swipe_deck: ^1.1.0
   url_launcher: ^6.1.9
+  image_picker: ^0.8.6+1
 
 
 dev_dependencies:

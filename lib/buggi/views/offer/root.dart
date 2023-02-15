@@ -39,6 +39,12 @@ class _OfferPageState extends State<OfferPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            context.pop();
+          },
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+        ),
         actions: [
           IconButton(
             onPressed: () {},

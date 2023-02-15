@@ -75,6 +75,7 @@ class ConfirmationDialog extends StatelessWidget {
 
   static Future<bool> show(
     String title, {
+    String? message,
     BuildContext? context,
     VoidCallback? onYes,
     VoidCallback? onNo,
@@ -87,7 +88,7 @@ class ConfirmationDialog extends StatelessWidget {
       builder: (ctx) {
         return CupertinoAlertDialog(
           title: Text(title),
-          content: const Text('Are you sure you want to log out ?'),
+          content: Text(message ?? 'Are you sure you want to log out ?'),
           actions: [
             TextButton(
               onPressed: () {

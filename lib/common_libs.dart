@@ -8,3 +8,4 @@ export 'package:animations/animations.dart';
 export 'package:image_fade/image_fade.dart';
 export 'package:swipe_deck/swipe_deck.dart';
 export 'package:url_launcher/url_launcher.dart';
+export 'package:image_picker/image_picker.dart';
