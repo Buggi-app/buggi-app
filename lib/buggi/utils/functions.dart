@@ -50,7 +50,5 @@ void contactTapped() async {
 tolaunchURL(Uri url) async {
   if (await canLaunchUrl(url)) {
     await launchUrl(url);
-  } else {
-    print('unable to launch');
-  }
+  } else {}
 }

@@ -60,7 +60,7 @@ class _BuggiActionsState extends State<BuggiActions> {
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16),
-              child: _hintText('The books are :'),
+              child: _hintText('The books I have are :'),
             ),
             ...addSection(booksA),
             Padding(
@@ -172,18 +172,28 @@ class _BuggiActionsState extends State<BuggiActions> {
               .toList(),
           Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
-            child: IconButton(
-              onPressed: () async {
-                var book = await Navigator.of(context).push<Book>(
-                  MaterialPageRoute(builder: (_) => AddBook()),
-                );
-                if (book != null) {
-                  setState(() {
-                    bks.add(book);
-                  });
-                }
-              },
-              icon: SvgPicture.asset(LocalAsset.addBookIcon, width: 26),
+            child: Column(
+              children: [
+                IconButton(
+                  onPressed: () async {
+                    var book = await Navigator.of(context).push<Book>(
+                      MaterialPageRoute(builder: (_) => const AddBook()),
+                    );
+                    if (book != null) {
+                      setState(() {
+                        bks.add(book);
+                      });
+                    }
+                  },
+                  icon: SvgPicture.asset(LocalAsset.addBookIcon, width: 26),
+                ),
+                const Text(
+                  'Tap to add a book',
+                  style: TextStyle(
+                    fontSize: 10,
+                  ),
+                )
+              ],
             ),
           ),
         ],

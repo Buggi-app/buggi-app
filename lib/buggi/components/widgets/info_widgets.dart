@@ -1,4 +1,4 @@
-import 'package:app/buggi/config/navigation/navigation.dart';
+import 'package:app/buggi/config/config.dart';
 import 'package:app/common_libs.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -12,13 +12,19 @@ void loadingDialog(BuildContext context) {
       });
 }
 
-void showToast(String message, {BuildContext? context, bool? isError}) {
+void showToast(String? message,
+    {BuildContext? context,
+    bool? isError,
+    bool isInfo = false,
+    Widget? infoWidget}) {
   SnackBar toaster;
   BuildContext toasterContext = context ?? GlobalNavigation.context!;
   if (isError ?? false) {
-    toaster = errorSnackBar(message);
+    toaster = errorSnackBar(message ?? '');
+  } else if (isInfo) {
+    toaster = infoSnackBar(infoWidget ?? Text(message ?? ''));
   } else {
-    toaster = successSnackBar(message);
+    toaster = successSnackBar(message ?? '');
   }
   ScaffoldMessenger.of(toasterContext).showSnackBar(toaster);
 }
@@ -66,6 +72,28 @@ SnackBar errorSnackBar(String error) => SnackBar(
             textAlign: TextAlign.center,
           ),
         ],
+      ),
+      behavior: SnackBarBehavior.floating,
+    );
+
+SnackBar infoSnackBar(Widget child) => SnackBar(
+      elevation: 16,
+      backgroundColor: Colors.white,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      content: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              width: 8,
+              color: AppTheme.orange,
+            ),
+          ),
+        ),
+        padding: const EdgeInsets.only(left: 8),
+        child: child,
       ),
       behavior: SnackBarBehavior.floating,
     );

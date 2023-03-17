@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:app/buggi/components/components.dart';
 import 'package:app/buggi/config/theme.dart';
 import 'package:app/buggi/models/models.dart';
@@ -48,7 +46,7 @@ class _OfferPageState extends State<OfferPage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.error_outline_rounded),
+            icon: const Text('Give feedback'),
           ),
         ],
       ),

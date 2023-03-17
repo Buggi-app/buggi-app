@@ -71,4 +71,10 @@ class BuggiAuth {
     await FirebaseAuth.instance.signInWithCredential(credential);
     return FirebaseAuth.instance.currentUser != null;
   }
+
+  static Future<void> forgotPassword(String email) async {
+    return await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+
+  static User get user => FirebaseAuth.instance.currentUser!;
 }

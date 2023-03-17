@@ -119,7 +119,7 @@ class _BuggImageState extends State<BuggImage> {
         child: LayoutBuilder(builder: (_, constraints) {
           double size =
               min(constraints.biggest.width, constraints.biggest.height);
-          if (size < 16) return SizedBox();
+          if (size < 16) return const SizedBox();
           return Icon(
             Icons.image_not_supported_outlined,
             color: Colors.white.withOpacity(.2),
@@ -161,9 +161,9 @@ class OfferPreview extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Offer Title',
-                      style: const TextStyle(height: 1),
+                      style: TextStyle(height: 1),
                       maxLines: 2,
                     ),
                     Text(
@@ -280,7 +280,7 @@ class BookDeck extends StatelessWidget {
   }
 
   static Widget lookForText(String text) {
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: Text(
         text,

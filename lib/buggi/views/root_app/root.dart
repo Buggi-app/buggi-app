@@ -31,6 +31,7 @@ class _RootAppState extends State<RootApp> {
   @override
   void initState() {
     super.initState();
+    AppTheme.systemChrome;
     homeScrollManager();
   }
 

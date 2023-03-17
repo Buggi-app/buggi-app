@@ -26,7 +26,7 @@ class HomeBottom extends StatelessWidget {
             foregroundColor: Colors.white,
           ),
           child: const Text(
-            'Buggi',
+            'Create an Offer',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,

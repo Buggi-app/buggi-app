@@ -155,6 +155,7 @@ class _EmailOnboardingState extends State<EmailOnboarding> {
             controller: _passwordController,
             decoration: const InputDecoration(
               hintText: '********',
+              errorMaxLines: 2,
             ),
             textInputAction: TextInputAction.done,
             keyboardType: TextInputType.visiblePassword,
@@ -163,8 +164,52 @@ class _EmailOnboardingState extends State<EmailOnboarding> {
               passwordSubmit();
             },
           ),
+          if (_step != 2)
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () async {
+                  await BuggiAuth.forgotPassword(_emailController.text);
+                  showToast(
+                    '',
+                    isInfo: true,
+                    infoWidget: Text.rich(
+                      TextSpan(
+                        text: 'Email sent to ',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: _emailController.text,
+                            style: const TextStyle(
+                              color: AppTheme.orange,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const TextSpan(
+                            text: '\nwith a reset password link',
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Forgot password'),
+              ),
+            ),
         ],
       ),
     );
+  }
+}
+
+class RecoverPasswordPage extends StatelessWidget {
+  const RecoverPasswordPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

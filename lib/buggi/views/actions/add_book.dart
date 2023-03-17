@@ -41,7 +41,7 @@ class _AddBookState extends State<AddBook> {
                 validator: emptyValidation,
                 maxLines: 2,
                 maxLength: 50,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'SOUND AND READ BOOK 1',
                   hintMaxLines: 2,
                   border: OutlineInputBorder(),
@@ -66,7 +66,13 @@ class _AddBookState extends State<AddBook> {
                       ),
                     ),
                     onPressed: _addImage,
-                    icon: const Icon(Icons.add_photo_alternate_outlined),
+                    icon: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.add_photo_alternate_outlined),
+                        Text('Tap to add an image')
+                      ],
+                    ),
                   ),
                 )
               else

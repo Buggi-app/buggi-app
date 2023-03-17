@@ -1,5 +1,5 @@
 import 'package:app/common_libs.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 class AppTheme {
   AppTheme._();
@@ -8,6 +8,13 @@ class AppTheme {
   static const Color orange = Color(0XFFFD8C09);
   static Color halfGrey = Colors.grey.withOpacity(.5);
   static const Color halfOrange = Color(0xFFffeedb);
+
+  static var systemChrome = SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: AppTheme.lightYellow,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
 
   static final ThemeData defaultTheme = ThemeData.light().copyWith(
     useMaterial3: true,
