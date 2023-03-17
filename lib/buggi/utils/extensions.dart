@@ -17,3 +17,7 @@ extension Navigation on BuildContext {
   double get height => mq.size.height;
   double get width => mq.size.width;
 }
+
+extension BuggiExt on Object? {
+  bool get isNotNull => this != null;
+}

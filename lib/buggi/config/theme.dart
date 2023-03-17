@@ -23,9 +23,12 @@ class AppTheme {
       primary: Colors.black,
       secondary: orange,
     ),
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: lightYellow,
       elevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
+        systemNavigationBarColor: lightYellow,
+      ),
     ),
     textTheme: GoogleFonts.poppinsTextTheme(),
   );

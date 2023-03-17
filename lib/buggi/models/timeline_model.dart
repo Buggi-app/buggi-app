@@ -1,5 +1,11 @@
 import 'package:app/common_libs.dart';
 
+class Section {
+  Section({required this.name, required this.offers});
+  final String name;
+  final AsyncValue offers;
+}
+
 class Timeline {
   final List<AsyncValue> sections;
 

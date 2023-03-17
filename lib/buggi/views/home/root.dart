@@ -1,9 +1,7 @@
-import 'package:app/buggi/config/config.dart';
+import 'package:app/buggi/views/actions/search.dart';
 import 'package:app/buggi/views/home/body.dart';
 import 'package:app/buggi/views/home/bottom.dart';
-import 'package:app/buggi/views/search/root.dart';
 import 'package:app/common_libs.dart';
-import 'package:flutter/cupertino.dart';
 
 class HomePage extends StatelessWidget {
   final ScrollController scrollController;
@@ -52,9 +50,9 @@ class HomePage extends StatelessWidget {
                   AnimatedOpacity(
                     duration: const Duration(milliseconds: 300),
                     opacity: getTopOpacity,
-                    child: const Text(
-                      'Hi, Lewis 😀',
-                      style: TextStyle(
+                    child: Text(
+                      greetings,
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         height: 1,
@@ -70,7 +68,7 @@ class HomePage extends StatelessWidget {
                     clipBehavior: Clip.hardEdge,
                     child: InkWell(
                       onTap: () {
-                        showSearch(context: context, delegate: SearchPage());
+                        SearchPage.show(context);
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),
@@ -158,5 +156,13 @@ class HomePage extends StatelessWidget {
     } else {
       return false;
     }
+  }
+
+  String get greetings {
+    var dn = FirebaseAuth.instance.currentUser?.displayName;
+    if (dn.isNotNull) {
+      return 'Hi, $dn 😀';
+    }
+    return 'Hello there 😀';
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:app/buggi/models/models.dart';
-import 'package:app/buggi/utils/utils.dart';
 import 'package:app/common_libs.dart';
 
 class AddBook extends StatefulWidget {
@@ -109,7 +108,8 @@ class _AddBookState extends State<AddBook> {
 
   _addBook() {
     if (_form.currentState!.validate()) {
-      var book = Book(url: coverImage!.path, name: _textEditingController.text);
+      var book = Book(
+          id: '1', cover: coverImage!.path, name: _textEditingController.text);
       Navigator.of(context).pop(book);
     }
   }

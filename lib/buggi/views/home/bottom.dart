@@ -1,6 +1,6 @@
 import 'package:app/buggi/config/config.dart';
 import 'package:app/buggi/utils/utils.dart';
-import 'package:app/buggi/views/actions/root.dart';
+import 'package:app/buggi/views/actions/create_offer.dart';
 import 'package:app/common_libs.dart';
 
 class HomeBottom extends StatelessWidget {
