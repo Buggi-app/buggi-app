@@ -27,9 +27,15 @@ class _BuggiActionsState extends State<BuggiActions> {
         booksB.isNotEmpty) {
       await FirebaseFirestore.instance.collection('offers').add({
         'title': _titleController.text,
-        'action': action,
+        'actions': [action],
         'grade': booksA.first.grade,
-        'owner': BuggiAuth.user.uid,
+        'owner': {
+          'id': BuggiAuth.user.uid,
+          'email': BuggiAuth.user.email,
+          'name': BuggiAuth.user.displayName,
+          'avatar': BuggiAuth.user.photoURL,
+          'phone': BuggiAuth.user.phoneNumber,
+        },
         'my_books': booksA.map((e) => e.id).toList(),
         'needed_books': booksB.map((e) => e.id).toList(),
         'description': _descController.text,
