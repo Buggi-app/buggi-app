@@ -1,3 +1,4 @@
+import 'package:app/buggi/components/components.dart';
 import 'package:app/buggi/config/config.dart';
 import 'package:app/buggi/models/book.dart';
 import 'package:app/buggi/models/dummy_data.dart';
@@ -87,110 +88,67 @@ class HomeBody extends ConsumerWidget {
           var offer = offers[index2];
           bool last = index2 == offers.length - 1;
           return Padding(
-            padding: EdgeInsets.only(
-              left: 16,
-              right: last ? 16 : 0,
-            ),
-            child: Material(
-              borderRadius: BorderRadius.circular(10),
-              clipBehavior: Clip.hardEdge,
-              color: Colors.white,
-              child: InkWell(
-                onTap: () {
-                  context.pushNamed(OfferPage.route, arguments: offer);
-                },
-                child: Container(
-                  height: 100,
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppTheme.halfGrey),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildImage(offer.ownerBooks),
-                      Container(
-                        width: 140 - 18,
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              offer.title,
-                              style: const TextStyle(height: 1),
-                              maxLines: 2,
+              padding: EdgeInsets.only(
+                left: 16,
+                right: last ? 16 : 0,
+              ),
+              child: offerCardBorder(
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildImage(offer.ownerBooks),
+                    Container(
+                      width: 140 - 18,
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            offer.title,
+                            style: const TextStyle(height: 1),
+                            maxLines: 2,
+                          ),
+                          Text(
+                            '',
+                            style: TextStyle(
+                              height: 1,
+                              fontSize: 12,
+                              color: Colors.grey.shade800,
                             ),
-                            Text(
-                              '',
-                              style: TextStyle(
-                                height: 1,
-                                fontSize: 12,
-                                color: Colors.grey.shade800,
-                              ),
-                              maxLines: 1,
-                            ),
-                            const Spacer(),
-                            Wrap(
-                              children: offer.actions
-                                  .map<Widget>(
-                                    (e) => Container(
-                                      margin: const EdgeInsets.only(right: 4),
-                                      padding: const EdgeInsets.only(
-                                        left: 4,
-                                        right: 4,
-                                        top: 2,
-                                        bottom: 0,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: AppTheme.halfGrey,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Text(
-                                        e == 0 ? 'exchange' : 'give',
-                                        style: TextStyle(
-                                          height: 1,
-                                          fontSize: 10,
-                                          color: Colors.grey.shade800,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                            const Spacer(),
-                            Row(
-                              children: [
-                                if (offer.owner.avatar.isNotNull)
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor: AppTheme.lightYellow,
-                                    foregroundImage: NetworkImage(
-                                      offer.owner.avatar!,
-                                    ),
-                                  ),
-                                if (offer.owner.avatar.isNotNull)
-                                  const SizedBox(width: 4),
-                                Text(
-                                  offer.owner.name ?? offer.owner.email,
-                                  style: TextStyle(
-                                    height: 1,
-                                    fontSize: 12,
-                                    color: Colors.grey.shade800,
-                                    fontWeight: FontWeight.bold,
+                            maxLines: 1,
+                          ),
+                          const Spacer(),
+                          offerTags(offer),
+                          const Spacer(),
+                          Row(
+                            children: [
+                              if (offer.owner.avatar.isNotNull)
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: AppTheme.lightYellow,
+                                  foregroundImage: NetworkImage(
+                                    offer.owner.avatar!,
                                   ),
                                 ),
-                              ],
-                            )
-                          ],
-                        ),
+                              if (offer.owner.avatar.isNotNull)
+                                const SizedBox(width: 4),
+                              Text(
+                                offer.owner.name ?? offer.owner.email,
+                                style: TextStyle(
+                                  height: 1,
+                                  fontSize: 12,
+                                  color: Colors.grey.shade800,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-          );
+              ));
         }
       },
     );

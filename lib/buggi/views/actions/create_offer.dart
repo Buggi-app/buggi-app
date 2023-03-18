@@ -1,46 +1,130 @@
 import 'package:app/buggi/components/components.dart';
 import 'package:app/buggi/models/models.dart';
-import 'package:app/buggi/views/actions/add_book.dart';
 import 'package:app/buggi/views/actions/search.dart';
 import 'package:app/common_libs.dart';
 
-class BuggiActions extends StatefulWidget {
+class BuggiActions extends ConsumerStatefulWidget {
   static const String route = '/buggi/actions';
-  const BuggiActions({super.key});
+  final String? offerId;
+  const BuggiActions({super.key, this.offerId});
 
   @override
-  State<BuggiActions> createState() => _BuggiActionsState();
+  ConsumerState<BuggiActions> createState() => _BuggiActionsState();
 }
 
-class _BuggiActionsState extends State<BuggiActions> {
+class _BuggiActionsState extends ConsumerState<BuggiActions> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
+  final List<String> availableActions = [
+    'Exchange a book',
+    'Give a book',
+  ];
   List<Book> booksA = [];
   List<Book> booksB = [];
   bool showDiscription = false;
   int action = 0;
+  bool loading = true;
+
+  void loadData() {
+    Offer myOffer =
+        (ref.read(timelineServiceProvider) as AsyncData<List<Section>>)
+            .value
+            .where((section) => section.offers is AsyncData)
+            .expand((section) => section.offers.asData!.value)
+            .firstWhere((element) => element.id == widget.offerId);
+
+    _titleController.text = myOffer.title;
+    action = myOffer.actions[0];
+    booksA = myOffer.ownerBooks.map((e) => e.asData!.value).toList();
+    booksB = myOffer.offerBooks.map((e) => e.asData!.value).toList();
+
+    setState(() {
+      if (myOffer.description.isNotEmpty) {
+        showDiscription = true;
+      }
+      loading = false;
+    });
+    _descController.text = myOffer.description;
+  }
 
   void submitOffer() async {
     if (_formKey.currentState!.validate() &&
         booksA.isNotEmpty &&
         booksB.isNotEmpty) {
+      setState(() {
+        loading = true;
+      });
       await FirebaseFirestore.instance.collection('offers').add({
         'title': _titleController.text,
         'actions': [action],
         'grade': booksA.first.grade,
-        'owner': {
-          'id': BuggiAuth.user.uid,
-          'email': BuggiAuth.user.email,
-          'name': BuggiAuth.user.displayName,
-          'avatar': BuggiAuth.user.photoURL,
-          'phone': BuggiAuth.user.phoneNumber,
-        },
+        'owner_id': BuggiAuth.user.uid,
+        'owner_email': BuggiAuth.user.email,
+        'owner_name': BuggiAuth.user.displayName,
+        'owner_avatar': BuggiAuth.user.photoURL,
+        'owner_phone': BuggiAuth.user.phoneNumber,
         'my_books': booksA.map((e) => e.id).toList(),
         'needed_books': booksB.map((e) => e.id).toList(),
         'description': _descController.text,
       });
+      ref.read(timelineServiceProvider.notifier).loadOffers().then((value) {
+        showToast('Offer added successfully');
+        Navigator.pop(context);
+      }).onError(
+        (error, stackTrace) {
+          showToast('Offer not added', isError: true);
+          Navigator.pop(context);
+        },
+      );
     }
+  }
+
+  void updateOffer() async {
+    if (_formKey.currentState!.validate() &&
+        booksA.isNotEmpty &&
+        booksB.isNotEmpty) {
+      setState(() {
+        loading = true;
+      });
+      await FirebaseFirestore.instance
+          .collection('offers')
+          .doc(widget.offerId!)
+          .update({
+        'title': _titleController.text,
+        'actions': [action],
+        'grade': booksA.first.grade,
+        'owner_id': BuggiAuth.user.uid,
+        'owner_email': BuggiAuth.user.email,
+        'owner_name': BuggiAuth.user.displayName,
+        'owner_avatar': BuggiAuth.user.photoURL,
+        'owner_phone': BuggiAuth.user.phoneNumber,
+        'my_books': booksA.map((e) => e.id).toList(),
+        'needed_books': booksB.map((e) => e.id).toList(),
+        'description': _descController.text,
+      });
+      ref.read(timelineServiceProvider.notifier).loadOffers().then((value) {
+        showToast('Offer updated successfully');
+        Navigator.pop(context);
+      }).onError(
+        (error, stackTrace) {
+          showToast('Offer not updated', isError: true);
+          Navigator.pop(context);
+        },
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (widget.offerId.isNotNull) {
+        loadData();
+      } else {
+        setState(() => loading = false);
+      }
+    });
   }
 
   @override
@@ -53,133 +137,148 @@ class _BuggiActionsState extends State<BuggiActions> {
           },
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
+        actions: (widget.offerId.isNotNull && !loading)
+            ? [
+                TextButton.icon(
+                  onPressed: updateOffer,
+                  style: ElevatedButton.styleFrom(
+                      foregroundColor: AppTheme.orange),
+                  icon: const Icon(Icons.save_alt_outlined),
+                  label: const Text('Save changes'),
+                )
+              ]
+            : null,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 80),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                child: _hintText('I want to :'),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: DropdownButton(
-                  elevation: 1,
-                  underline: const SizedBox.shrink(),
-                  dropdownColor: AppTheme.halfOrange,
-                  value: 'Exchange a book',
-                  onChanged: (value) {
-                    setState(() {
-                      action = value == 'Exchange a book' ? 0 : 1;
-                    });
-                  },
-                  items: [
-                    'Exchange a book',
-                    'Give a book',
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: _hintText('The books I have are :'),
-              ),
-              ...addSection(booksA),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: _hintText('General name of this books'),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: TextFormField(
-                  validator: emptyValidation,
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    hintText: 'Short description',
-                    hintStyle: TextStyle(
-                      color: AppTheme.halfGrey,
-                      height: 1,
+      body: loading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 80),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 16, right: 16, top: 16),
+                      child: _hintText('I want to :'),
                     ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 50),
-              Divider(
-                color: AppTheme.halfGrey,
-                thickness: 1,
-              ),
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: _hintText('The books I need are :'),
-              ),
-              ...addSection(booksB),
-              Divider(
-                color: AppTheme.halfGrey,
-                thickness: 1,
-              ),
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: _hintText('Any other description'),
-              ),
-              if (showDiscription)
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          maxLines: 5,
-                          minLines: 1,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      child: DropdownButton(
+                        elevation: 1,
+                        underline: const SizedBox.shrink(),
+                        dropdownColor: AppTheme.halfOrange,
+                        value: availableActions[action],
+                        onChanged: (value) {
+                          setState(() {
+                            action = value == 'Exchange a book' ? 0 : 1;
+                          });
+                        },
+                        items: availableActions
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      child: _hintText('The books I have are :'),
+                    ),
+                    ...addSection(booksA),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      child: _hintText('General name of this books'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      child: TextFormField(
+                        validator: emptyValidation,
+                        controller: _titleController,
+                        decoration: InputDecoration(
+                          hintText: 'Short description',
+                          hintStyle: TextStyle(
+                            color: AppTheme.halfGrey,
+                            height: 1,
+                          ),
                         ),
                       ),
-                      IconButton(
+                    ),
+                    const SizedBox(height: 50),
+                    Divider(
+                      color: AppTheme.halfGrey,
+                      thickness: 1,
+                    ),
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      child: _hintText('The books I need are :'),
+                    ),
+                    ...addSection(booksB),
+                    Divider(
+                      color: AppTheme.halfGrey,
+                      thickness: 1,
+                    ),
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      child: _hintText('Any other description'),
+                    ),
+                    if (showDiscription)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _descController,
+                                maxLines: 5,
+                                minLines: 1,
+                              ),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    showDiscription = false;
+                                  });
+                                },
+                                icon: Icon(Icons.delete))
+                          ],
+                        ),
+                      )
+                    else
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: IconButton(
                           onPressed: () {
                             setState(() {
-                              showDiscription = false;
+                              showDiscription = true;
                             });
                           },
-                          icon: Icon(Icons.delete))
-                    ],
-                  ),
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        showDiscription = true;
-                      });
-                    },
-                    icon: const Icon(Icons.add),
-                  ),
+                          icon: const Icon(Icons.add),
+                        ),
+                      ),
+                    SizedBox(height: 16)
+                  ],
                 ),
-              SizedBox(height: 16)
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: submitOffer,
-        label: Row(
-          children: const [
-            Text('Submit'),
-            SizedBox(width: 10),
-            Icon(Icons.arrow_forward_ios, size: 16)
-          ],
-        ),
-      ),
+              ),
+            ),
+      floatingActionButton: !widget.offerId.isNotNull
+          ? FloatingActionButton.extended(
+              onPressed: submitOffer,
+              label: Row(
+                children: const [
+                  Text('Submit'),
+                  SizedBox(width: 10),
+                  Icon(Icons.arrow_forward_ios, size: 16)
+                ],
+              ),
+            )
+          : null,
     );
   }
 

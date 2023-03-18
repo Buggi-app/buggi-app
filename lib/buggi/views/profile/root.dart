@@ -1,6 +1,3 @@
-import 'package:app/buggi/config/config.dart';
-import 'package:app/buggi/services/auth/root.dart';
-import 'package:app/buggi/utils/utils.dart';
 import 'package:app/buggi/views/profile/my_profile.dart';
 import 'package:app/common_libs.dart';
 
@@ -48,13 +45,52 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('users')
-                .doc(BuggiAuth.user.uid)
-                .snapshots(),
-            builder: (context, snapshot) {
-              return const MyProfileWidget();
-            })
+          stream: FirebaseAuth.instance.userChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return MyProfileCard(
+                user: snapshot.data!,
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+        Divider(
+          height: 1,
+          thickness: 1,
+          color: Colors.grey[300],
+        ),
+        Expanded(
+          child: LayoutBuilder(
+            builder: (context, cs) {
+              return SizedBox(
+                height: cs.maxHeight,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    bottom: 20,
+                  ),
+                  child: Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20, left: 16, right: 16),
+                        child: Text(
+                          'My Offers',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      MyOffersCard()
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        )
       ],
     );
   }

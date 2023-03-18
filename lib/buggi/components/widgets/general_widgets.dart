@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:app/buggi/config/theme.dart';
+import 'package:app/buggi/models/models.dart';
 import 'package:app/buggi/utils/utils.dart';
 import 'package:app/common_libs.dart';
 
@@ -304,4 +305,53 @@ class BookDeck extends StatelessWidget {
       ),
     );
   }
+}
+
+Material offerCardBorder(Widget child, {VoidCallback? onTap}) {
+  return Material(
+    borderRadius: BorderRadius.circular(10),
+    clipBehavior: Clip.hardEdge,
+    color: Colors.white,
+    child: InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppTheme.halfGrey),
+        ),
+        child: child,
+      ),
+    ),
+  );
+}
+
+Widget offerTags(Offer offer) {
+  return Wrap(
+    children: offer.actions
+        .map<Widget>(
+          (e) => Container(
+            margin: const EdgeInsets.only(right: 4),
+            padding: const EdgeInsets.only(
+              left: 4,
+              right: 4,
+              top: 2,
+              bottom: 0,
+            ),
+            decoration: BoxDecoration(
+              color: AppTheme.halfGrey,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              e == 0 ? 'exchange' : 'give',
+              style: TextStyle(
+                height: 1,
+                fontSize: 10,
+                color: Colors.grey.shade800,
+              ),
+            ),
+          ),
+        )
+        .toList(),
+  );
 }

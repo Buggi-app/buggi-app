@@ -34,14 +34,16 @@ class Offer {
       required this.ownerBooks,
       required this.owner});
 
-  Offer copyWith({List<AsyncValue<Book>>? ownerBooks}) {
+  Offer copyWith(
+      {List<AsyncValue<Book>>? ownerBooks,
+      List<AsyncValue<Book>>? offerBooks}) {
     return Offer(
       id: id,
       title: title,
       description: description,
       actions: actions,
       grade: grade,
-      offerBooks: offerBooks,
+      offerBooks: offerBooks ?? this.offerBooks,
       ownerBooks: ownerBooks ?? this.ownerBooks,
       owner: owner,
     );

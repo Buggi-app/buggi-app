@@ -20,6 +20,10 @@ class TimelineServiceNotifier extends StateNotifier<AsyncValue<List<Section>>> {
   late final CollectionReference<Map> booksCollection =
       firestore.collection('books');
 
+  updatepull() {
+    loadOffers();
+  }
+
   init() async {
     await sectionsCollection.get().then((value) {
       state = AsyncData(value.docs
@@ -36,7 +40,7 @@ class TimelineServiceNotifier extends StateNotifier<AsyncValue<List<Section>>> {
     });
   }
 
-  loadOffers() async {
+  Future<void> loadOffers() async {
     Iterable<Map<String, dynamic>> allOfers = await fetchAllOffers();
 
     preLoadOffers(allOfers);
@@ -69,6 +73,28 @@ class TimelineServiceNotifier extends StateNotifier<AsyncValue<List<Section>>> {
           newBooks[ob] = AsyncData(loadedBook);
           var newOffers = offers;
           newOffers[x] = newOffers[x].copyWith(ownerBooks: newBooks);
+          var newData = state.asData!.value;
+          newData[i] = newData[i].copyWith(newOffers);
+          state = AsyncData(newData);
+        }
+
+        for (int ob = 0; ob < offerBooks.length; ob++) {
+          String bookId = allOfers.firstWhere(
+              (element) => element['id'] == offers[x].id)['offerBooks'][ob];
+          Book loadedBook =
+              await booksCollection.doc(bookId).get().then((value) {
+            var dt = value.data()!;
+            return Book(
+              id: value.id,
+              name: dt['name'],
+              cover: dt['cover'],
+              grade: dt['grade'],
+            );
+          });
+          var newBooks = offerBooks;
+          newBooks[ob] = AsyncData(loadedBook);
+          var newOffers = offers;
+          newOffers[x] = newOffers[x].copyWith(offerBooks: newBooks);
           var newData = state.asData!.value;
           newData[i] = newData[i].copyWith(newOffers);
           state = AsyncData(newData);
@@ -106,11 +132,11 @@ class TimelineServiceNotifier extends StateNotifier<AsyncValue<List<Section>>> {
               (index) => const AsyncLoading(),
             ),
             owner: OfferOwner(
-              id: e['owner']['id'],
-              email: e['owner']['email'],
-              name: e['owner']['name'],
-              avatar: e['owner']['avatar'],
-              phone: e['owner']['phone'],
+              id: e['owner_id'],
+              email: e['owner_email'],
+              name: e['owner_name'],
+              avatar: e['owner_avatar'],
+              phone: e['owner_phone'],
             ),
           );
         }
@@ -140,7 +166,11 @@ class TimelineServiceNotifier extends StateNotifier<AsyncValue<List<Section>>> {
             'grade': dt['grade'],
             'offerBooks': dt['needed_books'],
             'ownerBooks': dt['my_books'],
-            'owner': dt['owner'],
+            'owner_id': dt['owner_id'],
+            'owner_email': dt['owner_email'],
+            'owner_name': dt['owner_name'],
+            'owner_avatar': dt['owner_avatar'],
+            'owner_phone': dt['owner_phone']
           };
         });
       },
