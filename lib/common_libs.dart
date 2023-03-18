@@ -15,3 +15,4 @@ export 'package:app/buggi/services/service.dart';
 export 'package:flutter/cupertino.dart' hide RefreshCallback;
 export 'package:app/buggi/config/config.dart';
 export 'package:app/buggi/utils/utils.dart';
+export 'package:firebase_storage/firebase_storage.dart';

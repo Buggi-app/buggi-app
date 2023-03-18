@@ -45,7 +45,7 @@ class GlobalNavigation {
       case EditProfilePage.route:
         return CustomPage(
           type: Transition.fade,
-          child: const EditProfilePage(),
+          child: EditProfilePage(),
         );
       default:
         return CustomPage(

@@ -14,30 +14,42 @@ class MyProfileCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 40,
-            backgroundColor: AppTheme.orange,
-            child: Padding(
-              padding: !user.photoURL.isNotNull
-                  ? const EdgeInsets.all(12.0)
-                  : EdgeInsets.zero,
-              child: !user.photoURL.isNotNull
-                  ? Image.asset(
-                      'assets/images/noface.png',
-                      fit: BoxFit.contain,
-                    )
-                  : Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.network(
-                        user.photoURL!,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-            ),
-          ),
+          !user.photoURL.isNotNull
+              ? CircleAvatar(
+                  radius: 40,
+                  backgroundColor: AppTheme.orange,
+                  child: Padding(
+                    padding: !user.photoURL.isNotNull
+                        ? const EdgeInsets.all(12.0)
+                        : EdgeInsets.zero,
+                    child: !user.photoURL.isNotNull
+                        ? Image.asset(
+                            'assets/images/noface.png',
+                            fit: BoxFit.contain,
+                          )
+                        : Container(
+                            clipBehavior: Clip.hardEdge,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Image.network(
+                              user.photoURL!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                  ),
+                )
+              : Container(
+                  height: 100,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: Image.network(
+                    user.photoURL!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
           Padding(
             padding: const EdgeInsets.only(left: 12),
             child: Column(
@@ -89,14 +101,6 @@ class MyOffersCard extends ConsumerWidget {
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stackTrace) => const SizedBox.shrink(),
       data: (data) {
-        // List<Offer> allOfers = [];
-        // for (var section in data) {
-        //   if (section.offers is AsyncData) {
-        //     for (var offer in section.offers.asData!.value) {
-        //       allOfers.add(offer);
-        //     }
-        //   }
-        // }
         String myId = BuggiAuth.user.uid;
         List<Offer> myOffers = data
             .where((section) => section.offers is AsyncData)
