@@ -67,6 +67,7 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
         'my_books': booksA.map((e) => e.id).toList(),
         'needed_books': booksB.map((e) => e.id).toList(),
         'description': _descController.text,
+        'created_at': Timestamp.now(),
       });
       ref.read(timelineServiceProvider.notifier).loadOffers().then((value) {
         showToast('Offer added successfully');
@@ -246,7 +247,7 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
                                     showDiscription = false;
                                   });
                                 },
-                                icon: Icon(Icons.delete))
+                                icon: const Icon(Icons.delete))
                           ],
                         ),
                       )
@@ -262,7 +263,7 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
                           icon: const Icon(Icons.add),
                         ),
                       ),
-                    SizedBox(height: 16)
+                    const SizedBox(height: 16)
                   ],
                 ),
               ),

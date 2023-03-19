@@ -1,7 +1,10 @@
 import 'package:app/buggi/components/components.dart';
+import 'package:app/buggi/models/book.dart';
 import 'package:app/buggi/models/timeline_model.dart';
+import 'package:app/buggi/views/actions/book_offers.dart';
 import 'package:app/buggi/views/actions/create_offer.dart';
 import 'package:app/buggi/views/offer/root.dart';
+import 'package:app/buggi/views/offer/section_offers.dart';
 import 'package:app/buggi/views/onboarding/root.dart';
 import 'package:app/buggi/views/profile/edit_profile.dart';
 import 'package:app/buggi/views/root_app/root.dart';
@@ -45,7 +48,21 @@ class GlobalNavigation {
       case EditProfilePage.route:
         return CustomPage(
           type: Transition.fade,
-          child: EditProfilePage(),
+          child: const EditProfilePage(),
+        );
+      case SectionOffers.route:
+        return CustomPage(
+          type: Transition.fade,
+          child: SectionOffers(
+            name: settings.arguments as String,
+          ),
+        );
+      case AvailableOffers.route:
+        return CustomPage(
+          type: Transition.fade,
+          child: AvailableOffers(
+            book: settings.arguments as Book,
+          ),
         );
       default:
         return CustomPage(

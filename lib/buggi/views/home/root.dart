@@ -1,3 +1,4 @@
+import 'package:app/buggi/views/actions/book_offers.dart';
 import 'package:app/buggi/views/actions/search.dart';
 import 'package:app/buggi/views/home/body.dart';
 import 'package:app/buggi/views/home/bottom.dart';
@@ -68,7 +69,12 @@ class HomePage extends StatelessWidget {
                     clipBehavior: Clip.hardEdge,
                     child: InkWell(
                       onTap: () {
-                        SearchPage.show(context);
+                        SearchPage.show(context).then(
+                          (value) => value.isNotNull
+                              ? context.pushNamed(AvailableOffers.route,
+                                  arguments: value)
+                              : null,
+                        );
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),

@@ -1,7 +1,4 @@
 import 'package:app/buggi/components/components.dart';
-import 'package:app/buggi/config/config.dart';
-import 'package:app/buggi/services/auth/root.dart';
-import 'package:app/buggi/utils/utils.dart';
 import 'package:app/buggi/views/onboarding/email_step.dart';
 import 'package:app/common_libs.dart';
 

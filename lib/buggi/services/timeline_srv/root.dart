@@ -67,6 +67,7 @@ class TimelineServiceNotifier extends StateNotifier<AsyncValue<List<Section>>> {
               name: dt['name'],
               cover: dt['cover'],
               grade: dt['grade'],
+              isbn: dt['isbn'],
             );
           });
           var newBooks = ownerBooks;
@@ -89,6 +90,7 @@ class TimelineServiceNotifier extends StateNotifier<AsyncValue<List<Section>>> {
               name: dt['name'],
               cover: dt['cover'],
               grade: dt['grade'],
+              isbn: dt['isbn'],
             );
           });
           var newBooks = offerBooks;
@@ -138,6 +140,7 @@ class TimelineServiceNotifier extends StateNotifier<AsyncValue<List<Section>>> {
               avatar: e['owner_avatar'],
               phone: e['owner_phone'],
             ),
+            createdAt: e['created_at'],
           );
         }
         return null;
@@ -170,7 +173,8 @@ class TimelineServiceNotifier extends StateNotifier<AsyncValue<List<Section>>> {
             'owner_email': dt['owner_email'],
             'owner_name': dt['owner_name'],
             'owner_avatar': dt['owner_avatar'],
-            'owner_phone': dt['owner_phone']
+            'owner_phone': dt['owner_phone'],
+            'created_at': dt['created_at']
           };
         });
       },

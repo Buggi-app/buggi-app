@@ -10,6 +10,7 @@ final bookStreamProvider = StreamProvider(
             cover: bd['cover'],
             name: bd['name'],
             grade: bd['grade'],
+            isbn: bd['isbn'],
           );
         }).toList(),
       ),
@@ -83,23 +84,26 @@ class SearchPage extends SearchDelegate<Book?> {
               itemCount: searchResults.length,
               itemBuilder: (context, index) {
                 Book book = searchResults.elementAt(index);
-                return InkWell(
-                  onTap: () {
-                    close(context, book);
-                  },
-                  child: Container(
-                    color: Colors.white.withOpacity(.6),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.only(),
-                      leading: book.cover.isNotNull
-                          ? Image.network(
-                              book.cover!,
-                              height: 100,
-                              width: 60,
-                              fit: BoxFit.cover,
-                            )
-                          : null,
-                      title: Text(book.name),
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: () {
+                      close(context, book);
+                    },
+                    child: Container(
+                      color: Colors.white.withOpacity(.6),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.only(),
+                        leading: book.cover.isNotNull
+                            ? Image.network(
+                                book.cover!,
+                                height: 100,
+                                width: 60,
+                                fit: BoxFit.cover,
+                              )
+                            : null,
+                        title: Text(book.name),
+                      ),
                     ),
                   ),
                 );

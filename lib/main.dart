@@ -1,4 +1,3 @@
-import 'package:app/buggi/config/config.dart';
 import 'package:app/common_libs.dart';
 
 void main() async {

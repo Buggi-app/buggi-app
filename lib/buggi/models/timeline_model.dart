@@ -23,20 +23,24 @@ class Offer {
   final List<AsyncValue<Book>> ownerBooks;
   final List<AsyncValue<Book>> offerBooks;
   final OfferOwner owner;
+  final Timestamp createdAt;
 
-  Offer(
-      {required this.id,
-      required this.title,
-      required this.description,
-      required this.actions,
-      required this.grade,
-      required this.offerBooks,
-      required this.ownerBooks,
-      required this.owner});
+  Offer({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.actions,
+    required this.grade,
+    required this.offerBooks,
+    required this.ownerBooks,
+    required this.createdAt,
+    required this.owner,
+  });
 
-  Offer copyWith(
-      {List<AsyncValue<Book>>? ownerBooks,
-      List<AsyncValue<Book>>? offerBooks}) {
+  Offer copyWith({
+    List<AsyncValue<Book>>? ownerBooks,
+    List<AsyncValue<Book>>? offerBooks,
+  }) {
     return Offer(
       id: id,
       title: title,
@@ -46,16 +50,9 @@ class Offer {
       offerBooks: offerBooks ?? this.offerBooks,
       ownerBooks: ownerBooks ?? this.ownerBooks,
       owner: owner,
+      createdAt: createdAt,
     );
   }
-
-  // factory Offer.fromJson(Map<String, dynamic> json) {
-  //   return Offer(
-  //     id: json['id'],
-  //     title: json['title'],
-  //     description: json['description'],
-  //   );
-  // }
 }
 
 class OfferOwner {

@@ -1,6 +1,4 @@
-import 'package:app/buggi/config/config.dart';
 import 'package:app/common_libs.dart';
-import 'package:flutter/cupertino.dart';
 
 void loadingDialog(BuildContext context) {
   showDialog(

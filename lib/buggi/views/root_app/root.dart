@@ -1,5 +1,4 @@
 import 'package:app/buggi/components/components.dart';
-import 'package:app/buggi/config/config.dart';
 import 'package:app/buggi/views/home/root.dart';
 import 'package:app/buggi/views/profile/root.dart';
 import 'package:app/common_libs.dart';

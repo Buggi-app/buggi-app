@@ -72,8 +72,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     bottom: 20,
                   ),
                   child: Column(
-                    children: [
-                      const Padding(
+                    children: const [
+                      Padding(
                         padding: EdgeInsets.only(top: 20, left: 16, right: 16),
                         child: Text(
                           'My Offers',

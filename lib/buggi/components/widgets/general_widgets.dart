@@ -1,8 +1,7 @@
 import 'dart:math';
 
-import 'package:app/buggi/config/theme.dart';
 import 'package:app/buggi/models/models.dart';
-import 'package:app/buggi/utils/utils.dart';
+import 'package:app/buggi/views/offer/root.dart';
 import 'package:app/common_libs.dart';
 
 class BuggiNavigationBar extends StatelessWidget {
@@ -250,33 +249,71 @@ class OfferPreview extends StatelessWidget {
 }
 
 class BookDeck extends StatelessWidget {
-  final List<String> links;
+  final List<AsyncValue<Book>> books;
   final ValueChanged<int> onChange;
   final double? width;
-  const BookDeck(
-      {super.key, required this.links, required this.onChange, this.width});
+  const BookDeck({
+    super.key,
+    required this.onChange,
+    this.width,
+    required this.books,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: width ?? context.width / 2,
-      child: SwipeDeck(
-        cardSpreadInDegrees: 10,
-        aspectRatio: 1.4,
-        onChange: onChange,
-        widgets: [
-          for (var i = 0; i < links.length; i++)
-            InkWell(
-              onTap: () {},
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: BuggImage(
-                  image: NetworkImage(links[i]),
-                ),
-              ),
+      child: books.length == 1
+          ? (books.first is AsyncData)
+              ? Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: SizedBox(
+                      height: 170,
+                      child: BuggImage(
+                        image: NetworkImage(books.first.asData!.value.cover!),
+                      ),
+                    ),
+                  ),
+                )
+              : Center(
+                  child: Container(
+                    width: 130,
+                    height: 170,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: AppTheme.halfGrey),
+                    ),
+                  ),
+                )
+          : SwipeDeck(
+              cardSpreadInDegrees: 10,
+              aspectRatio: 1.4,
+              onChange: onChange,
+              widgets: [
+                for (var i = 0; i < books.length; i++)
+                  if (books[i] is AsyncData)
+                    InkWell(
+                      onTap: () {},
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: BuggImage(
+                          image: NetworkImage(books[i].asData!.value.cover!),
+                        ),
+                      ),
+                    )
+                  else
+                    Container(
+                      width: 60,
+                      decoration: BoxDecoration(
+                        color: AppTheme.lightYellow,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppTheme.halfGrey),
+                      ),
+                    )
+              ],
             ),
-        ],
-      ),
     );
   }
 
@@ -354,4 +391,189 @@ Widget offerTags(Offer offer) {
         )
         .toList(),
   );
+}
+
+class OfferOwnerPreviewCard extends StatelessWidget {
+  const OfferOwnerPreviewCard({
+    super.key,
+    required this.offer,
+  });
+
+  final Offer offer;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        if (offer.owner.avatar.isNotNull)
+          CircleAvatar(
+            radius: 8,
+            backgroundColor: AppTheme.lightYellow,
+            foregroundImage: NetworkImage(
+              offer.owner.avatar!,
+            ),
+          ),
+        if (offer.owner.avatar.isNotNull) const SizedBox(width: 4),
+        Text(
+          offer.owner.name ?? offer.owner.email,
+          style: TextStyle(
+            height: 1,
+            fontSize: 12,
+            color: Colors.grey.shade800,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class BigOfferCard extends StatelessWidget {
+  const BigOfferCard({
+    super.key,
+    required this.offer,
+  });
+
+  final Offer offer;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: offerCardBorder(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 80,
+              width: context.width,
+              child: SingleChildScrollView(
+                child: Row(
+                  children: [
+                    ...offer.ownerBooks.map(
+                      (e) {
+                        if (e is AsyncData) {
+                          return Container(
+                            clipBehavior: Clip.hardEdge,
+                            width: 60,
+                            height: 80,
+                            margin: const EdgeInsets.only(
+                              right: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppTheme.lightYellow,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: AppTheme.halfGrey,
+                              ),
+                            ),
+                            child: Image.network(
+                              e.asData!.value.cover!,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        }
+                        return Container(
+                          width: 60,
+                          height: 80,
+                          margin: const EdgeInsets.only(right: 8),
+                          decoration: BoxDecoration(
+                            color: AppTheme.lightYellow,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: AppTheme.halfGrey,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 8),
+                      child: Icon(
+                        Icons.swap_horiz_outlined,
+                        color: AppTheme.orange,
+                      ),
+                    ),
+                    ...offer.offerBooks.map(
+                      (e) {
+                        if (e is AsyncData) {
+                          return Container(
+                            clipBehavior: Clip.hardEdge,
+                            width: 60,
+                            height: 80,
+                            margin: const EdgeInsets.only(
+                              right: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppTheme.lightYellow,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: AppTheme.halfGrey,
+                              ),
+                            ),
+                            child: Image.network(
+                              e.asData!.value.cover!,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        }
+                        return Container(
+                          width: 60,
+                          height: 80,
+                          padding: const EdgeInsets.only(right: 8),
+                          decoration: BoxDecoration(
+                            color: AppTheme.lightYellow,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: AppTheme.halfGrey,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              offer.title,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              offer.grade,
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[600],
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  DateFormat.yMMMEd().format(
+                    offer.createdAt.toDate(),
+                  ),
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                const Spacer(),
+                OfferOwnerPreviewCard(offer: offer),
+              ],
+            )
+          ],
+        ),
+        onTap: () => context.pushNamed(
+          OfferPage.route,
+          arguments: offer,
+        ),
+      ),
+    );
+  }
 }

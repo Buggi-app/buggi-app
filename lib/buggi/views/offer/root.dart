@@ -1,24 +1,6 @@
 import 'package:app/buggi/components/components.dart';
-import 'package:app/buggi/config/theme.dart';
 import 'package:app/buggi/models/models.dart';
-import 'package:app/buggi/utils/utils.dart';
 import 'package:app/common_libs.dart';
-
-List tempData = [
-  {
-    "name": "Grade1 klb",
-    "image": "https://klbbooks.com/wp-content/uploads/2020/10/math-grade1.png",
-  },
-  {
-    "name": "CRE 1 klb",
-    "image": "https://klbbooks.com/wp-content/uploads/2020/10/cre-g1.jpg",
-  },
-  {
-    "name": "CRE 1 klb",
-    "image":
-        "https://klbbooks.com/wp-content/uploads/2020/10/Environmental-Activities-Grade-1-PB-416x593.jpg",
-  },
-];
 
 class OfferPage extends StatefulWidget {
   final Offer offer;
@@ -53,28 +35,45 @@ class _OfferPageState extends State<OfferPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          BookDeck.lookForText('${DateFormat.yMMMEd().format(
+            widget.offer.createdAt.toDate(),
+          )}\n'),
           BookDeck.lookForText('My offer :'),
           BookDeck.lookForTitle(widget.offer.title),
           Padding(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, bottom: 40, top: 40),
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              bottom: 40,
+              top: 40,
+            ),
             child: Row(
               children: [
                 BookDeck(
-                  links: const [
-                    'https://klbbooks.com/wp-content/uploads/2020/10/math-grade1.png',
-                    'https://klbbooks.com/wp-content/uploads/2020/10/cre-g1.jpg',
-                    'https://klbbooks.com/wp-content/uploads/2020/10/Environmental-Activities-Grade-1-PB-416x593.jpg',
-                  ],
+                  books: widget.offer.ownerBooks,
                   onChange: (value) {
                     setState(() {
                       deckOneIndex = value;
                     });
                   },
                 ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  child: Text(tempData[deckOneIndex]["name"]),
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 500),
+                    child: widget.offer.ownerBooks[deckOneIndex] is AsyncData
+                        ? Text(
+                            widget.offer.ownerBooks[deckOneIndex].asData!.value
+                                .name,
+                          )
+                        : Container(
+                            height: 24,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                          ),
+                  ),
                 )
               ],
             ),
@@ -94,7 +93,7 @@ class _OfferPageState extends State<OfferPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    'Total books: ${tempData.length}',
+                    'Total books: ${widget.offer.ownerBooks.length}',
                     style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
                   ),
                 ),
@@ -124,9 +123,6 @@ class _OfferPageState extends State<OfferPage> {
             ),
           ),
           BookDeck.lookForText('Looking for :'),
-          BookDeck.lookForTitle(
-            'Grade two books in for different subjects in decent condition',
-          ),
           Padding(
             padding: const EdgeInsets.only(
               left: 16,
@@ -137,20 +133,30 @@ class _OfferPageState extends State<OfferPage> {
             child: Row(
               children: [
                 BookDeck(
-                  links: const [
-                    'https://klbbooks.com/wp-content/uploads/2020/10/english-literacy-g1.jpg',
-                    'https://klbbooks.com/wp-content/uploads/2020/10/cre-g1.jpg',
-                    'https://klbbooks.com/wp-content/uploads/2020/10/Environmental-Activities-Grade-1-PB-416x593.jpg',
-                  ],
+                  books: widget.offer.offerBooks,
                   onChange: (value) {
                     setState(() {
                       deckTwoIndex = value;
                     });
                   },
                 ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  child: Text(tempData[deckTwoIndex]["name"]),
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 500),
+                    child: widget.offer.offerBooks[deckOneIndex] is AsyncData
+                        ? Text(
+                            widget.offer.offerBooks[deckOneIndex].asData!.value
+                                .name,
+                          )
+                        : Container(
+                            height: 24,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                          ),
+                  ),
                 )
               ],
             ),
@@ -170,13 +176,18 @@ class _OfferPageState extends State<OfferPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    'Total books: ${tempData.length}',
+                    'Total books: ${widget.offer.offerBooks.length}',
                     style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
                   ),
                 ),
               ],
             ),
           ),
+          if (widget.offer.description.isNotEmpty) const SizedBox(height: 25),
+          if (widget.offer.description.isNotEmpty)
+            BookDeck.lookForText('Additional Information'),
+          if (widget.offer.description.isNotEmpty)
+            BookDeck.lookForTitle(widget.offer.description)
         ],
       ),
       floatingActionButton: const FloatingActionButton.extended(

@@ -1,10 +1,8 @@
 import 'package:app/buggi/components/components.dart';
-import 'package:app/buggi/config/config.dart';
 import 'package:app/buggi/models/book.dart';
-import 'package:app/buggi/models/dummy_data.dart';
 import 'package:app/buggi/models/timeline_model.dart';
-import 'package:app/buggi/utils/utils.dart';
 import 'package:app/buggi/views/offer/root.dart';
+import 'package:app/buggi/views/offer/section_offers.dart';
 import 'package:app/common_libs.dart';
 
 class HomeBody extends ConsumerWidget {
@@ -15,8 +13,8 @@ class HomeBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final timelineService = ref.watch(timelineServiceProvider);
     return timelineService.when(
-      loading: () => Center(child: CircularProgressIndicator()),
-      error: (error, stackTrace) => Text('data'),
+      loading: () => const SectionLoading(),
+      error: (error, stackTrace) => const Center(child: Icon(Icons.error)),
       data: (sections) {
         return RefreshIndicator(
           onRefresh: () {
@@ -29,39 +27,43 @@ class HomeBody extends ConsumerWidget {
             itemCount: sections.length,
             itemBuilder: (context, index) {
               Section section = sections[index];
-              Map<String, dynamic> currSection = timeLineData[index];
-              List offers = currSection['offers'];
-              if (offers.isNotEmpty) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16, bottom: 12),
-                        child: Text(
-                          section.name,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+              return section.offers.when(
+                loading: () => OffersLoading(sectionName: section.name),
+                error: (error, stackTrace) => const SizedBox.shrink(),
+                data: (offers) {
+                  if (offers.isEmpty) return const SizedBox.shrink();
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16, bottom: 12),
+                          child: Text(
+                            section.name,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 100,
-                        child: () {
-                          if (section.offers is AsyncData) {
-                            return _offerCards(section.offers.asData!.value);
-                          }
-                          return null;
-                        }(),
-                      )
-                    ],
-                  ),
-                );
-              } else {
-                return const SizedBox.shrink();
-              }
+                        SizedBox(
+                          height: 100,
+                          child: () {
+                            if (section.offers is AsyncData) {
+                              return _offerCards(
+                                offers.take(4).toList(),
+                                section.name,
+                              );
+                            }
+                            return null;
+                          }(),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              );
             },
           ),
         );
@@ -69,7 +71,7 @@ class HomeBody extends ConsumerWidget {
     );
   }
 
-  ListView _offerCards(List<Offer> offers) {
+  ListView _offerCards(List<Offer> offers, String name) {
     return ListView.builder(
       padding: const EdgeInsets.only(),
       itemCount: offers.length <= 2 ? offers.length : offers.length + 1,
@@ -80,7 +82,10 @@ class HomeBody extends ConsumerWidget {
           return Padding(
             padding: const EdgeInsets.only(right: 20),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () => context.pushNamed(
+                SectionOffers.route,
+                arguments: name,
+              ),
               child: const Text('More >'),
             ),
           );
@@ -88,67 +93,50 @@ class HomeBody extends ConsumerWidget {
           var offer = offers[index2];
           bool last = index2 == offers.length - 1;
           return Padding(
-              padding: EdgeInsets.only(
-                left: 16,
-                right: last ? 16 : 0,
-              ),
-              child: offerCardBorder(
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildImage(offer.ownerBooks),
-                    Container(
-                      width: 140 - 18,
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            offer.title,
-                            style: const TextStyle(height: 1),
-                            maxLines: 2,
+            padding: EdgeInsets.only(
+              left: 16,
+              right: last ? 16 : 0,
+            ),
+            child: offerCardBorder(
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildImage(offer.ownerBooks),
+                  Container(
+                    width: 140 - 18,
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          offer.title,
+                          style: const TextStyle(height: 1),
+                          maxLines: 2,
+                        ),
+                        Text(
+                          '',
+                          style: TextStyle(
+                            height: 1,
+                            fontSize: 12,
+                            color: Colors.grey.shade800,
                           ),
-                          Text(
-                            '',
-                            style: TextStyle(
-                              height: 1,
-                              fontSize: 12,
-                              color: Colors.grey.shade800,
-                            ),
-                            maxLines: 1,
-                          ),
-                          const Spacer(),
-                          offerTags(offer),
-                          const Spacer(),
-                          Row(
-                            children: [
-                              if (offer.owner.avatar.isNotNull)
-                                CircleAvatar(
-                                  radius: 8,
-                                  backgroundColor: AppTheme.lightYellow,
-                                  foregroundImage: NetworkImage(
-                                    offer.owner.avatar!,
-                                  ),
-                                ),
-                              if (offer.owner.avatar.isNotNull)
-                                const SizedBox(width: 4),
-                              Text(
-                                offer.owner.name ?? offer.owner.email,
-                                style: TextStyle(
-                                  height: 1,
-                                  fontSize: 12,
-                                  color: Colors.grey.shade800,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                          maxLines: 1,
+                        ),
+                        const Spacer(),
+                        offerTags(offer),
+                        const Spacer(),
+                        OfferOwnerPreviewCard(offer: offer)
+                      ],
                     ),
-                  ],
-                ),
-              ));
+                  ),
+                ],
+              ),
+              onTap: () => context.pushNamed(
+                OfferPage.route,
+                arguments: offer,
+              ),
+            ),
+          );
         }
       },
     );
@@ -178,6 +166,14 @@ class HomeBody extends ConsumerWidget {
                 fit: BoxFit.cover,
               );
             }
+            return Container(
+              width: 60,
+              decoration: BoxDecoration(
+                color: AppTheme.lightYellow,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: AppTheme.halfGrey),
+              ),
+            );
           }(),
         );
       },
