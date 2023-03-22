@@ -52,32 +52,40 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
     if (_formKey.currentState!.validate() &&
         booksA.isNotEmpty &&
         booksB.isNotEmpty) {
-      setState(() {
-        loading = true;
-      });
-      await FirebaseFirestore.instance.collection('offers').add({
-        'title': _titleController.text,
-        'actions': [action],
-        'grade': booksA.first.grade,
-        'owner_id': BuggiAuth.user.uid,
-        'owner_email': BuggiAuth.user.email,
-        'owner_name': BuggiAuth.user.displayName,
-        'owner_avatar': BuggiAuth.user.photoURL,
-        'owner_phone': BuggiAuth.user.phoneNumber,
-        'my_books': booksA.map((e) => e.id).toList(),
-        'needed_books': booksB.map((e) => e.id).toList(),
-        'description': _descController.text,
-        'created_at': Timestamp.now(),
-      });
-      ref.read(timelineServiceProvider.notifier).loadOffers().then((value) {
-        showToast('Offer added successfully');
-        Navigator.pop(context);
-      }).onError(
-        (error, stackTrace) {
-          showToast('Offer not added', isError: true);
+      var a = booksA.every((element) => element.grade == booksA.first.grade);
+      var b = booksB.every((element) => element.grade == booksB.first.grade);
+      if (a && b) {
+        setState(() {
+          loading = true;
+        });
+        await FirebaseFirestore.instance.collection('offers').add({
+          'title': _titleController.text,
+          'actions': [action],
+          'grade': booksA.first.grade,
+          'owner_id': BuggiAuth.user.uid,
+          'owner_email': BuggiAuth.user.email,
+          'owner_name': BuggiAuth.user.displayName,
+          'owner_avatar': BuggiAuth.user.photoURL,
+          'owner_phone': BuggiAuth.user.phoneNumber,
+          'my_books': booksA.map((e) => e.id).toList(),
+          'needed_books': booksB.map((e) => e.id).toList(),
+          'description': _descController.text,
+          'created_at': Timestamp.now(),
+        });
+        ref.read(timelineServiceProvider.notifier).loadOffers().then((value) {
+          showToast('Offer added successfully');
           Navigator.pop(context);
-        },
-      );
+        }).onError(
+          (error, stackTrace) {
+            showToast('Offer not added', isError: true);
+            Navigator.pop(context);
+          },
+        );
+      } else {
+        showToast('Book categories must belong to one category', isError: true);
+      }
+    } else {
+      showToast('Some values have not been added', isError: true);
     }
   }
 
@@ -114,6 +122,17 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
         },
       );
     }
+  }
+
+  void deleteOffer() async {
+    await FirebaseFirestore.instance
+        .collection('offers')
+        .doc(widget.offerId!)
+        .delete();
+    ref.read(timelineServiceProvider.notifier).loadOffers().then((value) {
+      showToast('Offer deleted successfully');
+      Navigator.pop(context);
+    });
   }
 
   @override
@@ -200,6 +219,9 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
                       child: TextFormField(
                         validator: emptyValidation,
                         controller: _titleController,
+                        maxLength: 110,
+                        maxLines: 5,
+                        minLines: 1,
                         decoration: InputDecoration(
                           hintText: 'Short description',
                           hintStyle: TextStyle(
@@ -209,7 +231,7 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 30),
                     Divider(
                       color: AppTheme.halfGrey,
                       thickness: 1,
@@ -239,6 +261,7 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
                                 controller: _descController,
                                 maxLines: 5,
                                 minLines: 1,
+                                maxLength: 500,
                               ),
                             ),
                             IconButton(
@@ -263,7 +286,23 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
                           icon: const Icon(Icons.add),
                         ),
                       ),
-                    const SizedBox(height: 16)
+                    const SizedBox(height: 16),
+                    if (widget.offerId.isNotNull)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: TextButton.icon(
+                          onPressed: deleteOffer,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: context.theme.colorScheme.error,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          icon: const Icon(Icons.delete_rounded),
+                          label: const Text('Delete offer'),
+                        ),
+                      )
                   ],
                 ),
               ),

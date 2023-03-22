@@ -1,10 +1,12 @@
 import 'package:app/buggi/components/widgets/input.dart';
+import 'package:app/buggi/models/models.dart';
 import 'package:app/common_libs.dart';
 
-void contactTapped() async {
+void contactTapped({required Offer offer}) async {
+  var bookNames = offer.ownerBooks.map((e) => e.asData?.value.name).toList();
   var selected = await Options.select<String>(
     title: 'Contact Me',
-    options: ['Call', 'Message', 'Email'],
+    options: ['Email'],
   );
   if (selected != null) {
     Uri launchUri;
@@ -35,10 +37,11 @@ void contactTapped() async {
         }
         launchUri = Uri(
           scheme: 'mailto',
-          path: 'smith@example.com',
+          path: offer.owner.email,
           query: encodeQueryParameters(<String, String>{
-            'subject': 'Example Subject & Symbols are allowed!',
-            'body': 'Hello world!',
+            'subject': 'Offer inquiry from Buggi',
+            'body':
+                'Hello I saw you had the following books\n ${bookNames.join(" ,")}\n',
           }),
         );
         tolaunchURL(launchUri);

@@ -31,3 +31,10 @@ String? passwordValidation(dynamic password) {
   }
   return null;
 }
+
+String? phoneValidation(String? value) {
+  if (value!.isEmpty || (value.length <= 9) || (value.length > 15)) {
+    return 'Please enter a valid phone number';
+  }
+  return null;
+}

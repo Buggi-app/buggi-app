@@ -60,12 +60,15 @@ class TimelineServiceNotifier extends StateNotifier<AsyncValue<List<Section>>> {
           String bookId = allOfers.firstWhere(
               (element) => element['id'] == offers[x].id)['ownerBooks'][ob];
           Book loadedBook =
-              await booksCollection.doc(bookId).get().then((value) {
+              await booksCollection.doc(bookId).get().then((value) async {
             var dt = value.data()!;
+            var image = await FirebaseStorage.instance
+                .ref("Books/${dt['cover']}")
+                .getDownloadURL();
             return Book(
               id: value.id,
               name: dt['name'],
-              cover: dt['cover'],
+              cover: image,
               grade: dt['grade'],
               isbn: dt['isbn'],
             );
@@ -83,12 +86,15 @@ class TimelineServiceNotifier extends StateNotifier<AsyncValue<List<Section>>> {
           String bookId = allOfers.firstWhere(
               (element) => element['id'] == offers[x].id)['offerBooks'][ob];
           Book loadedBook =
-              await booksCollection.doc(bookId).get().then((value) {
+              await booksCollection.doc(bookId).get().then((value) async {
             var dt = value.data()!;
+            var image = await FirebaseStorage.instance
+                .ref("Books/${dt['cover']}")
+                .getDownloadURL();
             return Book(
               id: value.id,
               name: dt['name'],
-              cover: dt['cover'],
+              cover: image,
               grade: dt['grade'],
               isbn: dt['isbn'],
             );

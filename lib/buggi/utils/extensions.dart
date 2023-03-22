@@ -14,6 +14,7 @@ extension Navigation on BuildContext {
   }
 
   MediaQueryData get mq => MediaQuery.of(this);
+  ThemeData get theme => Theme.of(this);
   double get height => mq.size.height;
   double get width => mq.size.width;
 }

@@ -3,11 +3,15 @@ import 'package:app/common_libs.dart';
 
 final bookStreamProvider = StreamProvider(
   (ref) => FirebaseFirestore.instance.collection('books').snapshots().asyncMap(
-        (event) => event.docs.map((e) {
+        (event) => event.docs.map((e) async {
           var bd = e.data();
+          var image = await FirebaseStorage.instance
+              .ref("Books/${bd['cover']}")
+              .getDownloadURL();
+
           return Book(
             id: e.id,
-            cover: bd['cover'],
+            cover: image,
             name: bd['name'],
             grade: bd['grade'],
             isbn: bd['isbn'],
@@ -71,42 +75,52 @@ class SearchPage extends SearchDelegate<Book?> {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stackTrace) => const Center(child: Text('Error')),
           data: (data) {
-            var searchResults = data
-                .where((element) => element.name.toLowerCase().contains(query))
-                .take(5);
-            return ListView.builder(
-              padding: const EdgeInsets.only(
-                left: 16,
-                right: 16,
-                top: 18,
-                bottom: 16,
-              ),
-              itemCount: searchResults.length,
-              itemBuilder: (context, index) {
-                Book book = searchResults.elementAt(index);
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {
-                      close(context, book);
-                    },
-                    child: Container(
-                      color: Colors.white.withOpacity(.6),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.only(),
-                        leading: book.cover.isNotNull
-                            ? Image.network(
-                                book.cover!,
-                                height: 100,
-                                width: 60,
-                                fit: BoxFit.cover,
-                              )
-                            : null,
-                        title: Text(book.name),
-                      ),
+            return FutureBuilder(
+              future: Future.wait(data),
+              builder: (context, snap) {
+                if (snap.hasData) {
+                  var searchResults = snap.data!
+                      .where((element) =>
+                          element.name.toLowerCase().contains(query))
+                      .take(5);
+                  return ListView.builder(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      top: 18,
+                      bottom: 16,
                     ),
-                  ),
-                );
+                    itemCount: searchResults.length,
+                    itemBuilder: (context, index) {
+                      Book book = searchResults.elementAt(index);
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            close(context, book);
+                          },
+                          child: Container(
+                            color: Colors.white.withOpacity(.6),
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.only(),
+                              leading: book.cover.isNotNull
+                                  ? Image.network(
+                                      book.cover!,
+                                      height: 100,
+                                      width: 60,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null,
+                              title: Text(book.name),
+                              subtitle: const SizedBox(width: 4, height: 4),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+                return const SizedBox();
               },
             );
           },
