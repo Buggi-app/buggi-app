@@ -1,16 +1,14 @@
-# app
+# Buggi app
 
-A new Flutter project.
+Buggi app helps make books easily accessible to everyone
 
-## Getting Started
+## How to run
 
-This project is a starting point for a Flutter application.
+ Have a flutter setup on your machine . Works ok on flutter-3.7.8 which is the latest as i write this .
 
-A few resources to get you started if this is your first Flutter project:
+Clone the repository
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+run flutter pub get
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+then run > flutter run --release
+
