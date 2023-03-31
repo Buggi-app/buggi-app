@@ -16,56 +16,51 @@ class HomeBody extends ConsumerWidget {
       loading: () => const SectionLoading(),
       error: (error, stackTrace) => const Center(child: Icon(Icons.error)),
       data: (sections) {
-        return RefreshIndicator(
-          onRefresh: () {
-            return Future.delayed(const Duration(seconds: 3));
-          },
-          child: ListView.builder(
-            controller: scrollController,
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.only(bottom: 60),
-            itemCount: sections.length,
-            itemBuilder: (context, index) {
-              Section section = sections[index];
-              return section.offers.when(
-                loading: () => OffersLoading(sectionName: section.name),
-                error: (error, stackTrace) => const SizedBox.shrink(),
-                data: (offers) {
-                  if (offers.isEmpty) return const SizedBox.shrink();
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16, bottom: 12),
-                          child: Text(
-                            section.name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
+        return ListView.builder(
+          controller: scrollController,
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 60),
+          itemCount: sections.length,
+          itemBuilder: (context, index) {
+            Section section = sections[index];
+            return section.offers.when(
+              loading: () => OffersLoading(sectionName: section.name),
+              error: (error, stackTrace) => const SizedBox.shrink(),
+              data: (offers) {
+                if (offers.isEmpty) return const SizedBox.shrink();
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, bottom: 12),
+                        child: Text(
+                          section.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
                         ),
-                        SizedBox(
-                          height: 100,
-                          child: () {
-                            if (section.offers is AsyncData) {
-                              return _offerCards(
-                                offers.take(4).toList(),
-                                section.name,
-                              );
-                            }
-                            return null;
-                          }(),
-                        )
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+                      ),
+                      SizedBox(
+                        height: 100,
+                        child: () {
+                          if (section.offers is AsyncData) {
+                            return _offerCards(
+                              offers.take(4).toList(),
+                              section.name,
+                            );
+                          }
+                          return null;
+                        }(),
+                      )
+                    ],
+                  ),
+                );
+              },
+            );
+          },
         );
       },
     );
@@ -103,7 +98,7 @@ class HomeBody extends ConsumerWidget {
                 children: [
                   _buildImage(offer.ownerBooks),
                   Container(
-                    width: 140 - 18,
+                    width: 122,
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,15 +107,6 @@ class HomeBody extends ConsumerWidget {
                           offer.title,
                           style: const TextStyle(height: 1),
                           maxLines: 2,
-                        ),
-                        Text(
-                          '',
-                          style: TextStyle(
-                            height: 1,
-                            fontSize: 12,
-                            color: Colors.grey.shade800,
-                          ),
-                          maxLines: 1,
                         ),
                         const Spacer(),
                         offerTags(offer),

@@ -1,5 +1,6 @@
 import 'package:app/buggi/components/widgets/info_widgets.dart';
 import 'package:app/common_libs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BuggiAuth {
   static String success = '200';
@@ -77,4 +78,31 @@ class BuggiAuth {
   }
 
   static User get user => FirebaseAuth.instance.currentUser!;
+}
+
+class NoSQLDb {
+  static final NoSQLDb _instance = NoSQLDb._();
+  static NoSQLDb get instance => _instance;
+  factory NoSQLDb() => _instance;
+  NoSQLDb._();
+  SharedPreferences? preferences;
+
+  static Future<void> init() async {
+    try {
+      instance.preferences = await SharedPreferences.getInstance();
+    } catch (e) {}
+  }
+
+  static Future<void> updatePhoneNumber(String phone) async {
+    await instance.preferences!.setString('phone_number', phone);
+  }
+
+  static String? get phoneNumber {
+    try {
+      String? phone = instance.preferences!.getString('phone_number');
+      return phone;
+    } catch (e) {
+      return '';
+    }
+  }
 }

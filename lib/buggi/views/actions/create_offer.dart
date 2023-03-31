@@ -66,7 +66,7 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
           'owner_email': BuggiAuth.user.email,
           'owner_name': BuggiAuth.user.displayName,
           'owner_avatar': BuggiAuth.user.photoURL,
-          'owner_phone': BuggiAuth.user.phoneNumber,
+          'owner_phone': NoSQLDb.phoneNumber,
           'my_books': booksA.map((e) => e.id).toList(),
           'needed_books': booksB.map((e) => e.id).toList(),
           'description': _descController.text,
@@ -82,10 +82,10 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
           },
         );
       } else {
-        showToast('Book categories must belong to one category', isError: true);
+        showToast('Book categories must \nbelong to one category', isError: true);
       }
     } else {
-      showToast('Some values have not been added', isError: true);
+      showToast('Some values have \nnot been added', isError: true);
     }
   }
 
@@ -107,7 +107,7 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
         'owner_email': BuggiAuth.user.email,
         'owner_name': BuggiAuth.user.displayName,
         'owner_avatar': BuggiAuth.user.photoURL,
-        'owner_phone': BuggiAuth.user.phoneNumber,
+        'owner_phone': NoSQLDb.phoneNumber,
         'my_books': booksA.map((e) => e.id).toList(),
         'needed_books': booksB.map((e) => e.id).toList(),
         'description': _descController.text,
@@ -178,32 +178,6 @@ class _BuggiActionsState extends ConsumerState<BuggiActions> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16, right: 16, top: 16),
-                      child: _hintText('I want to :'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 16),
-                      child: DropdownButton(
-                        elevation: 1,
-                        underline: const SizedBox.shrink(),
-                        dropdownColor: AppTheme.halfOrange,
-                        value: availableActions[action],
-                        onChanged: (value) {
-                          setState(() {
-                            action = value == 'Exchange a book' ? 0 : 1;
-                          });
-                        },
-                        items: availableActions
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.only(left: 16, right: 16),

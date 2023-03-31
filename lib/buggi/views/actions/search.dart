@@ -120,6 +120,9 @@ class SearchPage extends SearchDelegate<Book?> {
                     },
                   );
                 }
+                if (snap.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
                 return const SizedBox();
               },
             );

@@ -9,5 +9,6 @@ class Dependencies {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    await NoSQLDb.init();
   }
 }

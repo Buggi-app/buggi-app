@@ -416,6 +416,7 @@ class OfferOwnerPreviewCard extends StatelessWidget {
         if (offer.owner.avatar.isNotNull) const SizedBox(width: 4),
         Text(
           offer.owner.name ?? offer.owner.email,
+          maxLines: 1,
           style: TextStyle(
             height: 1,
             fontSize: 12,

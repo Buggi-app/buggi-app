@@ -13,6 +13,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final User user = FirebaseAuth.instance.currentUser!;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   XFile? image;
   bool imageUploaded = false;
@@ -22,10 +23,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
     _nameController.text = user.displayName ?? '';
+    _phoneController.text = NoSQLDb.phoneNumber ?? '';
   }
 
   update() async {
     if (_formKey.currentState!.validate()) {
+      NoSQLDb.updatePhoneNumber(_phoneController.text);
       await FirebaseAuth.instance.currentUser!
           .updateDisplayName(_nameController.text)
           .then(
@@ -155,6 +158,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   controller: _nameController,
                   validator: emptyValidation,
                   decoration: const InputDecoration(labelText: 'Name'),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                child: TextFormField(
+                  controller: _phoneController,
+                  validator: emptyValidation,
+                  keyboardType: TextInputType.phone,
+                  decoration: const InputDecoration(labelText: 'Phone number'),
                 ),
               ),
             ],
